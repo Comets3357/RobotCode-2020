@@ -1,0 +1,165 @@
+plugins {
+    id "cpp"
+    id "google-test-test-suite"
+    id "edu.wpi.first.GradleRIO" version "2021.3.1"
+    id "com.github.node-gradle.node" version "3.0.1"
+}
+
+// Define my targets (RoboRIO) and artifacts (deployable files)
+// This is added by GradleRIO's backing project EmbeddedTools.
+deploy {
+    targets {
+        roboRIO("roborio") {
+            // Team number is loaded either from the .wpilib/wpilib_preferences.json
+            // or from command line. If not found an exception will be thrown.
+            // You can use getTeamOrDefault(team) instead of getTeamNumber if you
+            // want to store a team number in this file.
+            team = frc.getTeamNumber()
+        }
+    }
+    artifacts {
+        frcNativeArtifact('frcCpp') {
+            targets << "roborio"
+            component = 'frcUserProgram'
+            // Debug can be overridden by command line, for use with VSCode
+            debug = frc.getDebugOrDefault(false)
+        }
+        // Built in artifact to deploy arbitrary files to the roboRIO.
+        fileTreeArtifact('frcStaticFileDeploy') {
+            // The directory below is the local directory to deploy
+            files = fileTree(dir: 'src/main/deploy')
+            // Deploy to RoboRIO target, into /home/lvuser/deploy
+            targets << "roborio"
+            directory = '/home/lvuser/deploy'
+        }
+    }
+}
+
+// Set this to true to include the src folder in the include directories passed
+// to the compiler. Some eclipse project imports depend on this behavior.
+// We recommend leaving this disabled if possible. Note for eclipse project
+// imports this is enabled by default. For new projects, its disabled
+def includeSrcInIncludeRoot = false
+
+// Set this to true to enable desktop support.
+def includeDesktopSupport = true
+
+// Enable simulation gui support. Must check the box in vscode to enable support
+// upon debugging
+dependencies {
+    simulation wpi.deps.sim.gui(wpi.platforms.desktop, true)
+    simulation wpi.deps.sim.driverstation(wpi.platforms.desktop, true)
+
+    // Websocket extensions require additional configuration.
+    // simulation wpi.deps.sim.ws_server(wpi.platforms.desktop, true)
+    // simulation wpi.deps.sim.ws_client(wpi.platforms.desktop, true)
+}
+
+// Simulation configuration (e.g. environment variables).
+sim {
+    // Sets the websocket client remote host.
+    // envVar "HALSIMWS_HOST", "10.0.0.2"
+}
+
+model {
+    components {
+        frcUserProgram(NativeExecutableSpec) {
+            targetPlatform wpi.platforms.roborio
+            if (includeDesktopSupport) {
+                targetPlatform wpi.platforms.desktop
+            }
+
+            sources.cpp {
+                source {
+                    srcDir 'src/main/cpp'
+                    include '**/*.cpp', '**/*.cc'
+                }
+                exportedHeaders {
+                    srcDir 'src/main/include'
+                    if (includeSrcInIncludeRoot) {
+                        srcDir 'src/main/cpp'
+                    }
+                }
+            }
+
+            // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
+            wpi.deps.vendor.cpp(it)
+            wpi.deps.wpilib(it)
+        }
+    }
+    testSuites {
+        frcUserProgramTest(GoogleTestTestSuiteSpec) {
+            testing $.components.frcUserProgram
+
+            sources.cpp {
+                source {
+                    srcDir 'src/test/cpp'
+                    include '**/*.cpp'
+                }
+            }
+
+            wpi.deps.vendor.cpp(it)
+            wpi.deps.wpilib(it)
+            wpi.deps.googleTest(it)
+        }
+    }
+}
+
+// Node Gradle plugin configuration
+node {
+    // Whether to download and install a specific Node.js version or not
+    // If false, it will use the globally installed Node.js
+    // If true, it will download node using above parameters
+    // Note that npm is bundled with Node.js
+    download = false
+    
+    // Version of node to download and install (only used if download is true)
+    // It will be unpacked in the workDir
+    // version = "14.17.3"
+    
+    // Version of npm to use
+    // If specified, installs it in the npmWorkDir
+    // If empty, the plugin will use the npm command bundled with Node.js
+    // npmVersion = ""
+    
+    // Version of Yarn to use
+    // Any Yarn task first installs Yarn in the yarnWorkDir
+    // It uses the specified version if defined and the latest version otherwise (by default)
+    // yarnVersion = ""
+    
+    // Base URL for fetching node distributions
+    // Only used if download is true
+    // Change it if you want to use a mirror
+    // Or set to null if you want to add the repository on your own.
+    // distBaseUrl = "https://nodejs.org/dist"
+    
+    // The npm command executed by the npmInstall task
+    // By default it is install but it can be changed to ci
+    // npmInstallCommand = "install"
+    
+    // The directory where Node.js is unpacked (when download is true) 
+    // workDir = file("${project.projectDir}/.gradle/nodejs")
+    
+    // The directory where npm is installed (when a specific version is defined)
+    // npmWorkDir = file("${project.projectDir}/.gradle/npm")
+    
+    // The directory where yarn is installed (when a Yarn task is used)
+    // yarnWorkDir = file("${project.projectDir}/.gradle/yarn")
+    
+    // The Node.js project directory location
+    // This is where the package.json file and node_modules directory are located
+    // By default it is at the root of the current project
+    nodeProjectDir = file("${project.projectDir}/tools/dashboard")
+    
+    // Whether the plugin automatically should add the proxy configuration to npm and yarn commands
+    // according the proxy configuration defined for Gradle
+    // Disable this option if you want to configure the proxy for npm or yarn on your own
+    // (in the .npmrc file for instance)
+    nodeProxySettings = ProxySettings.SMART
+}
+
+// Dashboard gradle node task
+task dashboard(type: NodeTask) {
+    description 'Runs dashboard in debug mode'
+    script = file('tools/dashboard/build/start.js')
+}

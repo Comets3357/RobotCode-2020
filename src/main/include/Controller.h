@@ -14,6 +14,7 @@ struct ControllerData
     bool manualMode = false;
     bool climbMode = false;
     bool shift = false;
+    bool shootingMode = false;
 
     // drivebase:
     double lDrive;

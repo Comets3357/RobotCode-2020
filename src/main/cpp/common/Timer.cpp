@@ -1,8 +1,5 @@
 #include "common/Timer.h"
 
-#include <frc/DriverStation.h>
-#include <frc/TimedRobot.h>
-
 void Timer::RobotInit(TimerData &timerData)
 {
     timer.Reset();
@@ -14,6 +11,7 @@ void Timer::RobotPeriodic(TimerData &timerData)
     if (!enabledSPointSet && frc::DriverStation::GetInstance().IsEnabled())
     {
         enabledStartPoint = timer.Get();
+        
         enabledSPointSet = true;
     }
 

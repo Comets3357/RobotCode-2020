@@ -1,9 +1,6 @@
 #include "subsystems/Drivebase.h"
 #include "RobotData.h"
 
-#include <frc/Driverstation.h>
-#include <frc/smartdashboard/SmartDashboard.h>
-
 void Drivebase::RobotInit()
 {
     dbLM.RestoreFactoryDefaults();
@@ -18,8 +15,10 @@ void Drivebase::RobotInit()
     dbLS.Follow(dbLM);
     dbRS.Follow(dbRM);
 
-    dbRM.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
-    dbLM.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+    dbRM.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    dbRS.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    dbLM.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    dbLS.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 
     dbLM.SetSmartCurrentLimit(45);
     dbRM.SetSmartCurrentLimit(45);
@@ -43,7 +42,9 @@ void Drivebase::RobotPeriodic(const RobotData &robotData, DrivebaseData &driveba
     if (frc::DriverStation::GetInstance().IsEnabled())
     {
         dbRM.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+        dbRS.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
         dbLM.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
+        dbLS.SetIdleMode(rev::CANSparkMax::IdleMode::kBrake);
     }
 
     teleopControl(robotData);
@@ -54,7 +55,9 @@ void Drivebase::DisabledInit()
     dbLM.Set(0);
     dbRM.Set(0);
     dbRM.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    dbRS.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
     dbLM.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    dbLS.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 }
 
 // updates encoder and gyro values
@@ -80,7 +83,7 @@ void Drivebase::teleopControl(const RobotData &robotData)
     double leftRight = cTurn * (tempRDrive - tempLDrive) / 2;
 
     //deadzone NOT needed for drone controller
-    if (tempLDrive <= -0.8 || tempLDrive >= 0.8)
+    if (tempLDrive <= -0.08 || tempLDrive >= 0.08)
     {
         tempLDrive = (frontBack - leftRight);
     }
@@ -89,7 +92,7 @@ void Drivebase::teleopControl(const RobotData &robotData)
         tempLDrive = 0;
     }
 
-    if (tempRDrive <= -0.8 || tempRDrive >= 0.8)
+    if (tempRDrive <= -0.08 || tempRDrive >= 0.08)
     {
         tempRDrive = (frontBack + leftRight);
     }
@@ -107,4 +110,5 @@ void Drivebase::teleopControl(const RobotData &robotData)
     //set as percent vbus
     dbLM.Set(tempLDrive);
     dbRM.Set(tempRDrive);
+
 }

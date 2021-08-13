@@ -2,6 +2,8 @@
 
 void Robot::RobotInit()
 {
+    timer.RobotInit(robotData.timerData);
+
     drivebase.RobotInit();
 }
 
@@ -28,6 +30,8 @@ void Robot::TeleopPeriodic()
 
 void Robot::DisabledInit()
 {
+    timer.DisabledInit();
+
     drivebase.DisabledInit();
 }
 

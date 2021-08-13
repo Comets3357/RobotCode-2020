@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 
+#include <frc/DriverStation.h>
 #include <frc/PowerDistributionPanel.h>
 #include <frc/TimedRobot.h>
 #include <rev/CANSparkMax.h>

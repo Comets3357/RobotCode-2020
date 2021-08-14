@@ -22,6 +22,15 @@ struct ControllerData
 
     bool dbInverted;
 
+    //shooter:
+        //manual:
+        bool mShooterFlyWheel;
+        double mSetTurret;
+        double mSetHood;
+
+        //auto:
+
+
     // btn data:
     // L = left, R = right, p = primary, s = secondary, Btn = button
 

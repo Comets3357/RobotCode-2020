@@ -125,6 +125,7 @@ void Controller::updateControlsData(ControllerData &controllerData)
     controllerData.shift = controllerData.sLBumper;
     controllerData.manualMode = controllerData.sRCenterBtnToggled;
     controllerData.climbMode = controllerData.sLCenterBtnToggled;
+    controllerData.shootingMode = controllerData.sXBtn;
 
     // controls:
 
@@ -132,6 +133,13 @@ void Controller::updateControlsData(ControllerData &controllerData)
     controllerData.lDrive = controllerData.pLYStick;
     controllerData.rDrive = controllerData.pRYStick;
     controllerData.dbInverted = false;
+
+    //shooter:
+        //manual:
+    controllerData.mShooterFlyWheel = controllerData.sBBtn;
+    controllerData.mSetHood = controllerData.sRYStick;
+    controllerData.mSetTurret = controllerData.sLYStick;
+
 
     
 }

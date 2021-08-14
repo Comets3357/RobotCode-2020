@@ -9,7 +9,8 @@
 #include "Controller.h"
 #include "RobotData.h"
 
-#include "subsystems\Drivebase.h"
+#include "subsystems/Drivebase.h"
+#include "subsystems/Intake.h"
 
 //Robot class inherits from TimedRobot
 class Robot : public frc::TimedRobot
@@ -39,4 +40,5 @@ private:
 
     // subsystems
     Drivebase drivebase{};
+    Intake intake{};
 };

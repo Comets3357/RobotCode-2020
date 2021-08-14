@@ -18,8 +18,14 @@ struct ControllerData
     // drivebase:
     double lDrive;
     double rDrive;
-
     bool dbInverted;
+
+    // intake:
+    bool mIntakeDown;
+    bool mIntakeRollers;
+    bool mIntakeRollersBackward;
+    bool saIntake;
+    bool saIntakeBackward;
 
     // btn data:
     // L = left, R = right, p = primary, s = secondary, Btn = button

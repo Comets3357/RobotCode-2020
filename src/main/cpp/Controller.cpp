@@ -133,5 +133,10 @@ void Controller::updateControlsData(ControllerData &controllerData)
     controllerData.rDrive = controllerData.pRYStick;
     controllerData.dbInverted = false;
 
-    
+    // intake:
+    controllerData.mIntakeDown = controllerData.sRBumper;
+    controllerData.mIntakeRollers = ((controllerData.sRTrigger > 0.5) && !controllerData.shift);
+    controllerData.mIntakeRollersBackward = ((controllerData.sRTrigger > 0.5) && controllerData.shift);
+    controllerData.saIntake = (controllerData.sRTrigger > 0.5);
+    controllerData.saIntakeBackward = (controllerData.sLTrigger > 0.5);
 }

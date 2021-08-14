@@ -10,6 +10,7 @@
 #include "auton/Auton.h"
 
 #include "subsystems/Drivebase.h"
+#include "subsystems/Indexer.h"
 
 //could be separated into all separate files for the data *from* each subsystem
 //commented out variables are not in use
@@ -24,4 +25,5 @@ struct RobotData
     AutonData autonData;
 
     DrivebaseData drivebaseData;
+    IndexerData indexerData;
 };

@@ -44,8 +44,6 @@ void Intake::RobotPeriodic(const RobotData &robotData, IntakeData &intakeData)
     {
         semiAuto(robotData, intakeData);
     }
-
-    frc::SmartDashboard::PutNumber("intakePivotEncoder", intakePivotEncoder.GetPosition());
 }
 
 void Intake::manual(const RobotData &robotData, IntakeData &intakeData)
@@ -53,24 +51,15 @@ void Intake::manual(const RobotData &robotData, IntakeData &intakeData)
     if (robotData.controllerData.mIntakeDown)
     {
         // pivot down
-        if (intakePivotEncoder.GetPosition() < 13)
+        if (intakePivotEncoder.GetPosition() < 12)
         {
-            intakePivot.Set(0.1);
+            intakePivot.Set(intakePivotSpeed);
             
         }
         // once you're down
         else
         {
             intakePivot.Set(0);
-            // delete this if we are using prox sensor for indexer belt suck
-            /* if (intakeRollersEncoder.GetVelocity() < 1150)
-            {
-                index.setIndexerBelt(0.36);
-            }
-            else
-            {
-                index.setIndexerBelt(0);
-            } */
         }
     }
     // otherise, bring the intake back up slowly
@@ -79,7 +68,7 @@ void Intake::manual(const RobotData &robotData, IntakeData &intakeData)
         
         if (intakePivotEncoder.GetPosition() > 0)
         {
-            intakePivot.Set(-0.1);
+            intakePivot.Set(-intakePivotSpeed);
         }
         else
         {
@@ -89,16 +78,11 @@ void Intake::manual(const RobotData &robotData, IntakeData &intakeData)
 
     if (robotData.controllerData.mIntakeRollers)
     {
-        intakeRollers.Set(0.3);
+        intakeRollers.Set(intakeRollersSpeed);
     }
-    else
+    else if (robotData.controllerData.mIntakeRollersBackward)
     {
-        intakeRollers.Set(0);
-    }
-
-    if (robotData.controllerData.mIntakeRollersBackward)
-    {
-        intakeRollers.Set(-0.3);
+        intakeRollers.Set(-intakeRollersSpeed);
     }
     else
     {
@@ -109,51 +93,31 @@ void Intake::manual(const RobotData &robotData, IntakeData &intakeData)
 
 void Intake::semiAuto(const RobotData &robotData, IntakeData &intakeData)
 {
-    // eject balls backward
-    /* if (index.getGoBack()){
-        goBack = true;
-        intakeRollers.Set(-0.25);
-    } else if (sStick.GetRawButton(1)){
-        goBack = false;
-        intakeRollers.Set(0);
-        index.setIndexerBelt(0);
-    } */
-
-
     if (robotData.controllerData.saIntake)
     {
         // pivot down
-        if (intakePivotEncoder.GetPosition() < 13)
+        if (intakePivotEncoder.GetPosition() < 12)
         {
-            intakePivot.Set(0.1);
-            intakeRollers.Set(0.3);
+            intakePivot.Set(intakePivotSpeed);
+            intakeRollers.Set(intakeRollersSpeed);
         }
         // once you're down
         else
         {
             intakePivot.Set(0);
-            // delete this if we are using prox sensor for indexer belt suck
-            /* if (intakeRollersEncoder.GetVelocity() < 1150)
-            {
-                index.setIndexerBelt(0.36);
-            }
-            else
-            {
-                index.setIndexerBelt(0);
-            } */
         }
     }
     // otherise, bring the intake back up slowly
     else if (robotData.controllerData.saIntakeBackward)
     {
-        intakeRollers.Set(-0.3);
+        intakeRollers.Set(-intakeRollersSpeed);
     }
     else
     {
         intakeRollers.Set(0);
         if (intakePivotEncoder.GetPosition() > 0)
         {
-            intakePivot.Set(-0.1);
+            intakePivot.Set(-intakePivotSpeed);
         }
         else
         {

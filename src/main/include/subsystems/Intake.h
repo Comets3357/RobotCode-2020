@@ -24,6 +24,9 @@ public:
 
 private:
 
+    const double intakePivotSpeed = 0.3;
+    const double intakeRollersSpeed = 0.3;
+
     void manual(const RobotData &robotData, IntakeData &intakeData);
     void semiAuto(const RobotData &robotData, IntakeData &intakeData);
 

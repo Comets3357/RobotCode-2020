@@ -123,8 +123,17 @@ void Controller::updateControlsData(ControllerData &controllerData)
 {
     // states:
     controllerData.shift = controllerData.sLBumper;
-    controllerData.manualMode = controllerData.sRCenterBtnToggled;
-    controllerData.climbMode = controllerData.sLCenterBtnToggled;
+    if (controllerData.sRCenterBtnToggled)
+    {
+        controllerData.manualMode = !controllerData.manualMode;
+    }
+    if (controllerData.sRCenterBtnToggled)
+    {
+        controllerData.climbMode = !controllerData.climbMode;
+    }
+
+    frc::SmartDashboard::PutBoolean("sRCenterBtnToggled", controllerData.sRCenterBtnToggled);
+    frc::SmartDashboard::PutBoolean("shift", controllerData.shift);
 
     // controls:
 

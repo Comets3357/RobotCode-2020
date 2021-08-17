@@ -64,6 +64,7 @@ private:
     void setHood(double power);
     void setTurret(double power);
     void setWheel(double power);
+    void setKick(double power);
     void setHoodPos(double pos);
     void setTurretPos(double pos); 
     

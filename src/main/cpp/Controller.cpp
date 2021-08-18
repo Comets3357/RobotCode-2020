@@ -133,5 +133,9 @@ void Controller::updateControlsData(ControllerData &controllerData)
     controllerData.rDrive = controllerData.pRYStick;
     controllerData.dbInverted = false;
 
+    // climb:
+    controllerData.lift = controllerData.sXBtn;
+    controllerData.climb = controllerData.sYBtn;
+
     
 }

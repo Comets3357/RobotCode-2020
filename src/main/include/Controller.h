@@ -21,6 +21,10 @@ struct ControllerData
 
     bool dbInverted;
 
+    // climb:
+    bool lift;
+    bool climb;
+
     // btn data:
     // L = left, R = right, p = primary, s = secondary, Btn = button
 

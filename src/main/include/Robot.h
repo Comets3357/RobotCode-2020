@@ -10,6 +10,7 @@
 #include "RobotData.h"
 
 #include "subsystems\Drivebase.h"
+#include "subsystems\Climb.h"
 
 //Robot class inherits from TimedRobot
 class Robot : public frc::TimedRobot
@@ -39,4 +40,5 @@ private:
 
     // subsystems
     Drivebase drivebase{};
+    Climb climb{};
 };

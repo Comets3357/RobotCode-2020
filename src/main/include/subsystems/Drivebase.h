@@ -31,17 +31,16 @@ private:
     const double cStraight = 1;
     const double cTurn = 0.4;
 
+    double setPoint; //for pid tuning
+
     void updateData(const RobotData &robotData, DrivebaseData &drivebaseData);
     void teleopControl(const RobotData &robotData);
+    void pidTuningControl(const RobotData &robotData);
 
-    rev::CANSparkMax dbLM{leftLeadDeviceID,
-                          rev::CANSparkMax::MotorType::kBrushless};
-    rev::CANSparkMax dbRM{rightLeadDeviceID,
-                          rev::CANSparkMax::MotorType::kBrushless};
-    rev::CANSparkMax dbLS{leftFollowDeviceID,
-                          rev::CANSparkMax::MotorType::kBrushless};
-    rev::CANSparkMax dbRS{rightFollowDeviceID,
-                          rev::CANSparkMax::MotorType::kBrushless};
+    rev::CANSparkMax dbLM{leftLeadDeviceID, rev::CANSparkMax::MotorType::kBrushless};
+    rev::CANSparkMax dbRM{rightLeadDeviceID, rev::CANSparkMax::MotorType::kBrushless};
+    rev::CANSparkMax dbLS{leftFollowDeviceID, rev::CANSparkMax::MotorType::kBrushless};
+    rev::CANSparkMax dbRS{rightFollowDeviceID, rev::CANSparkMax::MotorType::kBrushless};
 
     rev::CANEncoder dbRMEncoder = dbRM.GetEncoder();
     rev::CANEncoder dbLMEncoder = dbLM.GetEncoder();

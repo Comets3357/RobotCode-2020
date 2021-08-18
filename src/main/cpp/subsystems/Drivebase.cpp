@@ -48,6 +48,8 @@ void Drivebase::RobotPeriodic(const RobotData &robotData, DrivebaseData &driveba
     }
 
     teleopControl(robotData);
+    // to use, commment out teleopControl
+    // pidTuningControl(robotData);
 }
 
 void Drivebase::DisabledInit()
@@ -113,8 +115,22 @@ void Drivebase::teleopControl(const RobotData &robotData)
 
 }
 
+//this is the function for tuning drivebase pids
+//to use it, you HAVE to comment out teleopControl in periodic so that the motor controllers don't receive conflicting commands
+//the robot will drive forward as you use rev client. BE IN SEMI AUTO MODE
+//to drive the robot back to start over again, TOGGLE TO MANUAL MODE ON SECONDARY
 void Drivebase::pidTuningControl(const RobotData &robotData){
-    double setPoint;
+    if(robotData.controllerData.manualMode){
+        teleopControl(robotData);
+    } else {
+        double setPoint;
+        if(robotData.gyroData.yaw > 180){
+                setPoint = (360 - robotData.gyroData.yaw) * 30;
+            } else {
+                setPoint = 0;
+            }
+            dbLMPID.SetReference(setPoint, rev::ControlType::kVelocity);
+    }
     
 }
 

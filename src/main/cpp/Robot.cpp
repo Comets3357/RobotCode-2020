@@ -15,7 +15,7 @@ void Robot::RobotPeriodic()
     {
         otherComponents.RobotPeriodic(robotData.otherComponentsData);
 
-        drivebase.RobotPeriodic(robotData, robotData.drivebaseData);
+        drivebase.RobotPeriodic(robotData, robotData.drivebaseData, robotData.autonData);
     }
 }
 

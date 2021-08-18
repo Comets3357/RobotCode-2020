@@ -16,7 +16,7 @@ void Auton::AutonomousInit(const RobotData &robotData, AutonData &autonData)
     
 }
 
-void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData, ControllerData &controllerData)
+void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData, ControllerData &controllerData, DrivebaseData &drivebaseData)
 {
     // for debugging
     // frc::SmartDashboard::PutNumber("autonStep", autonData.autonStep);
@@ -35,11 +35,8 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
         switch (autonData.autonStep)
         {
         case 0:
-            // robotData.desiredDBDist = -20;
-            // robotData.driveMode = driveMode_initDriveStraight;
-            break;
-        case 1:
-            // robotData.driveMode = driveMode_driveStraight;
+            drivebaseData.desiredDistance = -20;
+            drivebaseData.driveMode = driveMode_driveStraight;
             break;
         default:
             // endAllTasks(robotData);
@@ -134,3 +131,7 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
 
 }
 
+void Auton::endAllTasks(const RobotData &robotData, ControllerData &controllerData){
+    //end shooting
+    //
+}

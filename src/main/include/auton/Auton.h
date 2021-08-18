@@ -5,6 +5,7 @@
 
 struct RobotData;
 struct ControllerData;
+struct DrivebaseData;
 
 
 enum AutonSelect
@@ -16,16 +17,20 @@ enum AutonSelect
     autonSelect_shootAndDriveToDriverStation
 };
 
-enum DriveMode
-{
-    driveMode_teleop,
-    driveMode_potato
-};
-
 struct AutonData
 {
     int autonStep = 0;
     AutonSelect autonSelection = autonSelect_potato;
+
+    // drive straight
+    bool driveStraightInitialized = false;
+    int desiredDistance = 0;
+    double initialLDBPos;
+    double initialRDBPos;
+    double initialAngle;
+
+    
+
 };
 
 class Auton
@@ -33,12 +38,13 @@ class Auton
 public:
     void RobotInit();
     void AutonomousInit(const RobotData &robotData, AutonData &autonData);
-    void AutonomousPeriodic(const RobotData &robotData, AutonData &autonData, ControllerData &controllerData);
+    void AutonomousPeriodic(const RobotData &robotData, AutonData &autonData, ControllerData &controllerData, DrivebaseData &drivebaseData);
 
 private:
     void startDelay(double duration, const RobotData &robotData);
     void checkDelay(const RobotData &robotData);
-    void endAllTasks(const RobotData &RobotData, ControllerData &controllerData);
+    void endAllTasks(const RobotData &robotData, ControllerData &controllerData);
+    
 
     frc::SendableChooser<AutonSelect> autonSelector;
 

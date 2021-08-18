@@ -48,3 +48,11 @@ void Indexer::manual(const RobotData &robotData, IndexerData &indexerData)
         indexerBelts.Set(0);
     }
 }
+
+void Indexer::semiAuto(const RobotData &robotData, IndexerData &indexerData)
+{
+    if (robotData.controllerData.saEjectBallsBackwards)
+    {
+        indexerBelts.Set(-ejectBallSpeed);
+    }
+}

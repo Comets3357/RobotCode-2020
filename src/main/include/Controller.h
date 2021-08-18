@@ -24,6 +24,7 @@ struct ControllerData
     // indexer:
     bool mIndexer;
     bool mIndexerBackwards;
+    bool saEjectBallsBackwards;
 
     // btn data:
     // L = left, R = right, p = primary, s = secondary, Btn = button

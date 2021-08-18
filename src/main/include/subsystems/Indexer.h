@@ -23,6 +23,7 @@ public:
 
 private:
     const double indexerBeltsSpeed = 0.25;
+    const double ejectBallSpeed = 0.5;
 
     void updateData(const RobotData &robotData, IndexerData &indexerData);
     void manual(const RobotData &robotData, IndexerData &indexerData);

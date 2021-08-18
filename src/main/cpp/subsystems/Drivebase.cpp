@@ -112,3 +112,9 @@ void Drivebase::teleopControl(const RobotData &robotData)
     dbRM.Set(tempRDrive);
 
 }
+
+void Drivebase::pidTuningControl(const RobotData &robotData){
+    double setPoint;
+    
+}
+

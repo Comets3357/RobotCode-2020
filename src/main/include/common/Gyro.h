@@ -1,6 +1,6 @@
 #pragma once
 
-#include <adi/ADIS16448_IMU.h>
+#include <adi/ADIS16470_IMU.h>
 
 struct GyroData
 {
@@ -18,7 +18,13 @@ class Gyro
 {
 
 public:
+    void RobotInit(GyroData &gyroData);
+    void RobotPeriodic(GyroData &gyroData);
+
+
 
 private:
+    frc::ADIS16470_IMU gyro{};
+    void updateData(GyroData &gyroData);
 
 };

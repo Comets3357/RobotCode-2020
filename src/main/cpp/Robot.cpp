@@ -3,6 +3,7 @@
 void Robot::RobotInit()
 {
     timer.RobotInit(robotData.timerData);
+    gyro.RobotInit(robotData.gyroData);
 
     drivebase.RobotInit();
 }
@@ -10,6 +11,7 @@ void Robot::RobotInit()
 void Robot::RobotPeriodic()
 {
     timer.RobotPeriodic(robotData.timerData);
+    gyro.RobotPeriodic(robotData.gyroData);
 
     if (IsEnabled())
     {

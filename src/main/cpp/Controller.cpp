@@ -148,4 +148,26 @@ void Controller::updateControlsData(ControllerData &controllerData)
     controllerData.mIntakeRollersBackward = ((controllerData.sRTrigger > 0.5) && controllerData.shift);
     controllerData.saIntake = (controllerData.sRTrigger > 0.5);
     controllerData.saIntakeBackward = (controllerData.sLTrigger > 0.5);
+    
+    //shooter:
+    controllerData.mShooterFlyWheel = controllerData.sBBtn;
+    controllerData.mSetHood = controllerData.sRYStick;
+    controllerData.mSetTurret = controllerData.sLYStick;
+
+    //limelight:
+    if(getPOV(1,0) == 180){
+        controllerData.roughHood += 1;
+    }else if(secondary.GetPOV(0) == 0){
+        controllerData.roughHood -= 1;
+    }
+
+    if(getPOV(1,0) == 90){
+        controllerData.roughTurret = 1;
+    }else if(secondary.GetPOV(0) == 270){
+        controllerData.roughTurret = -1;
+    }else{
+        controllerData.roughTurret = 0;
+
+    }
+    
 }

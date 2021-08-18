@@ -14,6 +14,7 @@ struct ControllerData
     bool manualMode = false;
     bool climbMode = false;
     bool shift = false;
+    bool shootingMode = false;
 
     // drivebase:
     double lDrive;
@@ -26,6 +27,15 @@ struct ControllerData
     bool mIntakeRollersBackward;
     bool saIntake;
     bool saIntakeBackward;
+
+    //shooter:
+    bool mShooterFlyWheel;
+    double mSetTurret;
+    double mSetHood;
+
+    //limelight
+    int roughHood = 0;
+    int roughTurret = 0;
 
     // btn data:
     // L = left, R = right, p = primary, s = secondary, Btn = button

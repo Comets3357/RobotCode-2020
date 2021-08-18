@@ -3,23 +3,48 @@
 
 void Indexer::RobotInit()
 {
-    indexerBelt.RestoreFactoryDefaults();
+    indexerBelts.RestoreFactoryDefaults();
 
-    indexerBelt.SetInverted(false);
+    indexerBelts.SetInverted(false);
 
-    indexerBelt.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
+    indexerBelts.SetIdleMode(rev::CANSparkMax::IdleMode::kCoast);
 
-    indexerBelt.SetSmartCurrentLimit(45);
+    indexerBelts.SetSmartCurrentLimit(45);
 }
 
 void Indexer::RobotPeriodic(const RobotData &robotData, IndexerData &indexerData)
 {
     updateData(robotData, indexerData);
+
+    if (robotData.controllerData.manualMode)
+    {
+        manual(robotData, indexerData);
+    }
+    else
+    {
+        semiAuto(robotData, indexerData);
+    }
 }
 
 void Indexer::updateData(const RobotData &robotData, IndexerData &indexerData)
 {
-    indexerData.currentIndexerPos = indexerBeltEncoder.GetPosition();
+    indexerData.currentIndexerPos = indexerBeltsEncoder.GetPosition();
 
-    indexerData.currentIndexerVel = indexerBeltEncoder.GetVelocity();
+    indexerData.currentIndexerVel = indexerBeltsEncoder.GetVelocity();
+}
+
+void Indexer::manual(const RobotData &robotData, IndexerData &indexerData)
+{
+    if (robotData.controllerData.mIndexer)
+    {
+        indexerBelts.Set(indexerBeltsSpeed);
+    }
+    else if (robotData.controllerData.mIndexerBackwards)
+    {
+        indexerBelts.Set(-indexerBeltsSpeed);
+    }
+    else
+    {
+        indexerBelts.Set(0);
+    }
 }

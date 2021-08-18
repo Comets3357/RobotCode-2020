@@ -22,11 +22,14 @@ public:
     void RobotPeriodic(const RobotData &robotData, IndexerData &indexerData);
 
 private:
+    const double indexerBeltsSpeed = 0.25;
+
     void updateData(const RobotData &robotData, IndexerData &indexerData);
-    void teleopControl(const RobotData &robotData);
+    void manual(const RobotData &robotData, IndexerData &indexerData);
+    void semiAuto(const RobotData &robotData, IndexerData &indexerData);
 
-    rev::CANSparkMax indexerBelt{indexerBeltsID, rev::CANSparkMax::MotorType::kBrushless};
+    rev::CANSparkMax indexerBelts{indexerBeltsID, rev::CANSparkMax::MotorType::kBrushless};
 
-    rev::CANEncoder indexerBeltEncoder = indexerBelt.GetEncoder();
-    rev::CANPIDController indexerBeltPID = indexerBelt.GetPIDController();
+    rev::CANEncoder indexerBeltsEncoder = indexerBelts.GetEncoder();
+    rev::CANPIDController indexerBeltsPID = indexerBelts.GetPIDController();
 };

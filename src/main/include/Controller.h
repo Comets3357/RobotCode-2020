@@ -21,6 +21,10 @@ struct ControllerData
 
     bool dbInverted;
 
+    // indexer:
+    bool mIndexer;
+    bool mIndexerBackwards;
+
     // btn data:
     // L = left, R = right, p = primary, s = secondary, Btn = button
 
@@ -87,4 +91,3 @@ private:
     frc::Joystick primary{0};
     frc::Joystick secondary{1};
 };
-

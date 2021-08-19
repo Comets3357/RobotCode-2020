@@ -170,4 +170,8 @@ void Controller::updateControlsData(ControllerData &controllerData)
 
     }
     
+    // indexer:
+    controllerData.mIndexer = ((controllerData.sLTrigger > 0.5) && !controllerData.shift);
+    controllerData.mIndexerBackwards = ((controllerData.sLTrigger > 0.5) && controllerData.shift);
+    controllerData.saEjectBallsBackwards = controllerData.sABtn;
 }

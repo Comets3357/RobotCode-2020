@@ -21,6 +21,11 @@ struct ControllerData
     double rDrive;
     bool dbInverted;
 
+    // indexer:
+    bool mIndexer;
+    bool mIndexerBackwards;
+    bool saEjectBallsBackwards;
+
     // intake:
     bool mIntakeDown;
     bool mIntakeRollers;
@@ -103,4 +108,3 @@ private:
     frc::Joystick primary{0};
     frc::Joystick secondary{1};
 };
-

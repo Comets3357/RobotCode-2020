@@ -18,6 +18,7 @@ void Robot::RobotPeriodic()
         otherComponents.RobotPeriodic(robotData.otherComponentsData);
 
         drivebase.RobotPeriodic(robotData, robotData.drivebaseData);
+        indexer.RobotPeriodic(robotData, robotData.indexerData);
         intake.RobotPeriodic(robotData, robotData.intakeData);
         shooter.RobotPeriodic(robotData, robotData.shooterData);
     }

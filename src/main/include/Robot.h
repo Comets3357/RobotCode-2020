@@ -41,4 +41,5 @@ private:
     // subsystems
     Drivebase drivebase{};
     Intake intake{};
+    Shooter shooter{};
 };

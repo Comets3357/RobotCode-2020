@@ -189,7 +189,7 @@ void Shooter::semiAutoMode(const RobotData &robotData, ShooterData &shooterData)
 
 }
 
-void Shooter::manualMode(RobotData &robotData){
+void Shooter::manualMode(const RobotData &robotData){
     
     // frc::SmartDashboard::PutNumber("turret pos", getTurretPos());
 

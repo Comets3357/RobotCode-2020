@@ -19,6 +19,7 @@ void Robot::RobotPeriodic()
 
         drivebase.RobotPeriodic(robotData, robotData.drivebaseData);
         intake.RobotPeriodic(robotData, robotData.intakeData);
+        shooter.RobotPeriodic(robotData, robotData.shooterData);
     }
 }
 

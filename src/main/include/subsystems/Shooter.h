@@ -70,9 +70,6 @@ private:
     
     //void updateDiagnostics(DiagnosticsData &diagnosticsData);
 
-    void semiAutoMode(RobotData &robotData);
-    void manualMode(RobotData &robotData);   
-
 
     rev::CANSparkMax shooterFlywheelM{shooterWheelMID, rev::CANSparkMax::MotorType::kBrushless};
     rev::CANSparkMax shooterFlywheelS{shooterWheelSID, rev::CANSparkMax::MotorType::kBrushless};

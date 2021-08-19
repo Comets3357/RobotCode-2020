@@ -55,4 +55,8 @@ void Indexer::semiAuto(const RobotData &robotData, IndexerData &indexerData)
     {
         indexerBelts.Set(-ejectBallSpeed);
     }
+    else
+    {
+        indexerBelts.Set(0);
+    }
 }

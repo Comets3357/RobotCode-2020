@@ -35,7 +35,7 @@ void Drivebase::RobotInit()
     dbRS.BurnFlash();
 }
 
-void Drivebase::RobotPeriodic(const RobotData &robotData, DrivebaseData &drivebaseData, AutonData &autonData)
+void Drivebase::RobotPeriodic(const RobotData &robotData, DrivebaseData &drivebaseData)
 {
     updateData(robotData, drivebaseData);
 
@@ -49,7 +49,7 @@ void Drivebase::RobotPeriodic(const RobotData &robotData, DrivebaseData &driveba
 
     
     
-    switch (drivebaseData.driveMode)
+    switch (robotData.controllerData.driveMode)
     {
         case driveMode_teleop:
             teleopControl(robotData);
@@ -58,7 +58,7 @@ void Drivebase::RobotPeriodic(const RobotData &robotData, DrivebaseData &driveba
             potato(robotData);
             break;
         case driveMode_driveStraight:
-            driveStraight(robotData, drivebaseData, autonData);
+            driveStraight(robotData, drivebaseData);
             break;
         default:
             potato(robotData);
@@ -140,11 +140,12 @@ void Drivebase::potato(const RobotData &robotData){
     autonControl(robotData);
 }
 
-void Drivebase::driveStraight(const RobotData &robotData, DrivebaseData &drivebaseData, AutonData &autonData){
+void Drivebase::driveStraight(const RobotData &robotData, DrivebaseData &drivebaseData){
     if(!drivebaseData.driveStraightInitialized){
         drivebaseData.initialLDBPos = drivebaseData.currentLDBPos;
         drivebaseData.initialRDBPos = drivebaseData.currentRDBPos;
         drivebaseData.initialAngle = robotData.gyroData.rawYaw;
+        drivebaseData.driveStraightCompleted = false;
         drivebaseData.driveStraightInitialized = true;
     }
 
@@ -184,8 +185,8 @@ void Drivebase::driveStraight(const RobotData &robotData, DrivebaseData &driveba
         courseCorrection(true, robotData, drivebaseData);
 
         if (lDistLeft <= .5 && rDistLeft <= .5) {
+            drivebaseData.driveStraightCompleted = true;
             drivebaseData.driveStraightInitialized = false;
-            autonData.autonStep++;
         }
     } else {
          if(lDistLeft < 0){
@@ -219,8 +220,9 @@ void Drivebase::driveStraight(const RobotData &robotData, DrivebaseData &driveba
         courseCorrection(false, robotData, drivebaseData);
 
         if (lDistLeft >= -.5 && rDistLeft >= -.5) {
-            autonData.driveStraightInitialized = false;
-            autonData.autonStep++;
+            drivebaseData.driveStraightCompleted = true;
+            drivebaseData.driveStraightInitialized = false;
+            // autonData.autonStep++;
         }
     }
 }

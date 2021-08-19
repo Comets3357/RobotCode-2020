@@ -10,11 +10,16 @@
  * button index starts at 1
  */
 
+void Controller::TeleopInit(ControllerData &controllerData){
+    controllerData.driveMode = driveMode_teleop;
+}
+
 void Controller::TeleopPeriodic(const RobotData &robotData, ControllerData &controllerData)
 {
     updateBtnData(controllerData);
     updateControlsData(controllerData);
 }
+
 
 bool Controller::getBtn(int js, int index)
 {
@@ -123,8 +128,17 @@ void Controller::updateControlsData(ControllerData &controllerData)
 {
     // states:
     controllerData.shift = controllerData.sLBumper;
-    controllerData.manualMode = controllerData.sRCenterBtnToggled;
-    controllerData.climbMode = controllerData.sLCenterBtnToggled;
+    if (controllerData.sRCenterBtnToggled)
+    {
+        controllerData.manualMode = !controllerData.manualMode;
+    }
+    if (controllerData.sRCenterBtnToggled)
+    {
+        controllerData.climbMode = !controllerData.climbMode;
+    }
+
+    frc::SmartDashboard::PutBoolean("sRCenterBtnToggled", controllerData.sRCenterBtnToggled);
+    frc::SmartDashboard::PutBoolean("shift", controllerData.shift);
 
     // controls:
 
@@ -132,6 +146,34 @@ void Controller::updateControlsData(ControllerData &controllerData)
     controllerData.lDrive = controllerData.pLYStick;
     controllerData.rDrive = controllerData.pRYStick;
     controllerData.dbInverted = false;
+
+    // intake:
+    controllerData.mIntakeDown = controllerData.sRBumper;
+    controllerData.mIntakeRollers = ((controllerData.sRTrigger > 0.5) && !controllerData.shift);
+    controllerData.mIntakeRollersBackward = ((controllerData.sRTrigger > 0.5) && controllerData.shift);
+    controllerData.saIntake = (controllerData.sRTrigger > 0.5);
+    controllerData.saIntakeBackward = (controllerData.sLTrigger > 0.5);
+    
+    //shooter:
+    controllerData.mShooterFlyWheel = controllerData.sBBtn;
+    controllerData.mSetHood = controllerData.sRYStick;
+    controllerData.mSetTurret = controllerData.sLYStick;
+
+    //limelight:
+    if(getPOV(1,0) == 180){
+        controllerData.roughHood += 1;
+    }else if(secondary.GetPOV(0) == 0){
+        controllerData.roughHood -= 1;
+    }
+
+    if(getPOV(1,0) == 90){
+        controllerData.roughTurret = 1;
+    }else if(secondary.GetPOV(0) == 270){
+        controllerData.roughTurret = -1;
+    }else{
+        controllerData.roughTurret = 0;
+
+    }
 
     
 }

@@ -41,9 +41,13 @@ public:
     void AutonomousPeriodic(const RobotData &robotData, AutonData &autonData, ControllerData &controllerData, DrivebaseData &drivebaseData);
 
 private:
+    double delayFinal;
     void startDelay(double duration, const RobotData &robotData);
-    void checkDelay(const RobotData &robotData);
+    void checkDelay(const RobotData &robotData, AutonData &autonData);
     void endAllTasks(const RobotData &robotData, ControllerData &controllerData);
+
+    void driveStraight(double distance, const RobotData &robotData, DrivebaseData &drivebaseData, ControllerData &controllerData, AutonData &autonData);
+    void checkDriveStraight(const RobotData &robotData, AutonData &autonData);
     
 
     frc::SendableChooser<AutonSelect> autonSelector;

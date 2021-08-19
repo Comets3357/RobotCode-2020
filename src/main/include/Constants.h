@@ -11,6 +11,9 @@ const int
 const int
     intakePivotID = 11,
     intakeWheelsID = 12;
+const double
+    pkP = 0.02, pkI = 0, pkD = 0, pkIz = 0, pkFF = 0, pkMaxOutput = 1, pkMinOutput = -1,
+    wkP = 1, wkI = 0, wkD = 0, wkIz = 0, wkFF = 0, wkMaxOutput = 1, wkMinOutput = -1;
 
 // indexer
 const int

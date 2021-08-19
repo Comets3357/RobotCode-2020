@@ -5,6 +5,10 @@ void Auton::RobotInit()
 {
     //auton selector
     autonSelector.AddOption("Potato", AutonSelect::autonSelect_potato);
+    autonSelector.AddOption("Exit Init Line Towards Driver Station", AutonSelect::autonSelect_exitInitLineDriverStation);
+    autonSelector.AddOption("Exit Init Line Towards Rendezvous", AutonSelect::autonSelect_exitInitLineRendezvous);
+    autonSelector.AddOption("Shoot and Drive Towards Driver Station", AutonSelect::autonSelect_shootAndDriveToDriverStation);
+    autonSelector.AddOption("Shoot and Drive Towards Rendezvous", AutonSelect::autonSelect_shootAndDriveToRendezvous);
     autonSelector.SetDefaultOption("Potato", AutonSelect::autonSelect_potato);
 }
 
@@ -27,7 +31,7 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
     switch(autonData.autonSelection)
     {
     case autonSelect_potato:
-        // endAllTasks(robotData, controllerData);
+        endAllTasks(robotData, controllerData);
         break;
 
     case autonSelect_exitInitLineDriverStation:
@@ -35,11 +39,12 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
         switch (autonData.autonStep)
         {
         case 0:
-            drivebaseData.desiredDistance = -20;
-            drivebaseData.driveMode = driveMode_driveStraight;
+            // drivebaseData.desiredDistance = -20;
+            // controllerData.driveMode = driveMode_driveStraight;
+            driveStraight(-20, robotData, drivebaseData, controllerData, autonData);
             break;
         default:
-            // endAllTasks(robotData);
+            endAllTasks(robotData, controllerData);
             break;
         }
         break;
@@ -49,14 +54,15 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
         switch (autonData.autonStep)
         {
         case 0:
-            // robotData.desiredDBDist = 20;
-            // robotData.driveMode = driveMode_initDriveStraight;
+            // drivebaseData.desiredDistance = 20;
+            // controllerData.driveMode = driveMode_driveStraight;
+            driveStraight(20, robotData, drivebaseData, controllerData, autonData);
             break;
-        case 1:
-            // robotData.driveMode = driveMode_driveStraight;
-            break;
+        // case 1:
+        //     // robotData.driveMode = driveMode_driveStraight;
+        //     break;
         default:
-            // endAllTasks(robotData);
+            endAllTasks(robotData, controllerData);
             break;
         }
         break;
@@ -66,28 +72,27 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
         switch (autonData.autonStep)
         {
         case 0:
-            // robotData.sBBtn = true;
-            // startDelay(10, robotData);
-            // robotData.shootingMode = true;
-            // robotData.driveMode = driveMode_potato;
-            // robotData.autonStep++;
+            //run up flywheel?
+            controllerData.driveMode = driveMode_potato;
+            controllerData.shootingMode = true;
+            startDelay(10, robotData);
+            autonData.autonStep++;
             break;
         case 1:
-            // checkDelay(robotData);
+            checkDelay(robotData, autonData);
             break;
         case 2:
-            // robotData.shootingMode = false;
-            // robotData.autonStep++;
+            controllerData.shootingMode = false;
+            autonData.autonStep++;
             break;
         case 3:
-            // robotData.desiredDBDist = -20;
-            // robotData.driveMode = driveMode_initDriveStraight;
+            drivebaseData.desiredDistance = -20;
+            controllerData.driveMode = driveMode_driveStraight;
+            checkDriveStraight(robotData, autonData);
             break;
-        case 4:
-            // robotData.driveMode = driveMode_driveStraight;
-            break;
+        
         default:
-            // endAllTasks(robotData);
+            endAllTasks(robotData, controllerData);
             break;
         }
         break;
@@ -97,41 +102,59 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
         switch (autonData.autonStep)
         {
         case 0:
-            // robotData.sBBtn = true;
-            // startDelay(10, robotData);
-            // robotData.shootingMode = true;
-            // robotData.driveMode = driveMode_potato;
-            // robotData.autonStep++;
+            controllerData.driveMode = driveMode_potato;
+            controllerData.shootingMode = true;
+            startDelay(10, robotData);
+            autonData.autonStep++;
             break;
         case 1:
-            // checkDelay(robotData);
+            checkDelay(robotData, autonData);
             break;
         case 2:
             //turn shooter off before driving away
-            // robotData.shootingMode = false;
-            // robotData.autonStep++;
+            controllerData.shootingMode = false;
+            autonData.autonStep++;
             break;
         case 3:
-            // robotData.desiredDBDist = 20;
-            // robotData.driveMode = driveMode_initDriveStraight;
-            break;
-        case 4:
-            // robotData.driveMode = driveMode_driveStraight;
+            drivebaseData.desiredDistance = 20;
+            controllerData.driveMode = driveMode_driveStraight;
             break;
         default:
-            // endAllTasks(robotData);
+            endAllTasks(robotData, controllerData);
             break;
         }
         break;
 
         default:
-            // endAllTasks(robotData);
+            endAllTasks(robotData, controllerData);
             break;
     }
 
 }
 
+void Auton::startDelay(double duration, const RobotData &robotData){
+    delayFinal = robotData.timerData.secSinceEnabled + duration;
+}
+
+void Auton::checkDelay(const RobotData &robotData, AutonData &autonData){
+    if (robotData.timerData.secSinceEnabled > delayFinal){
+        autonData.autonStep++;
+    }
+}
+
 void Auton::endAllTasks(const RobotData &robotData, ControllerData &controllerData){
-    //end shooting
-    //
+    controllerData.shootingMode = false;
+    controllerData.driveMode = driveMode_potato;
+}
+
+void Auton::driveStraight(double distance, const RobotData &robotData, DrivebaseData &drivebaseData, ControllerData &controllerData, AutonData &autonData){
+    drivebaseData.desiredDistance = distance;
+    controllerData.driveMode = driveMode_driveStraight;
+    checkDriveStraight(robotData, autonData);
+}
+
+void Auton::checkDriveStraight(const RobotData &robotData, AutonData &autonData){
+    if(robotData.drivebaseData.driveStraightCompleted){
+        autonData.autonStep++;
+    }
 }

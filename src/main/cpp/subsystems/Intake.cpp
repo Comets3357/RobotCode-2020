@@ -112,6 +112,10 @@ void Intake::semiAuto(const RobotData &robotData, IntakeData &intakeData)
     {
         intakeRollers.Set(-intakeRollersSpeed);
     }
+    else if (robotData.controllerData.saEjectBallsBackwards)
+    {
+        intakeRollers.Set(-intakeRollersEjectSpeed);
+    }
     else
     {
         intakeRollers.Set(0);

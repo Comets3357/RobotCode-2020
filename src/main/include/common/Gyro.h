@@ -1,6 +1,8 @@
 #pragma once
 
+#ifdef __FRC_ROBORIO__
 #include <adi/ADIS16470_IMU.h>
+#endif
 
 struct GyroData
 {
@@ -21,10 +23,9 @@ public:
     void RobotInit(GyroData &gyroData);
     void RobotPeriodic(GyroData &gyroData);
 
-
-
 private:
+#ifdef __FRC_ROBORIO__
     frc::ADIS16470_IMU gyro{};
+#endif
     void updateData(GyroData &gyroData);
-
 };

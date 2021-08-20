@@ -81,18 +81,18 @@ void Controller::updateBtnData(ControllerData &controllerData)
         controllerData.pRYStick = -getAxis(0, 5);
     }
 
-    // controllerData.pLShoulderSwitch = getBtn(0, 0);
-    // controllerData.pRShoulderSwitch = getBtn(0, 0);
+    controllerData.pLShoulderSwitch = getBtn(0, 2);
+    controllerData.pRShoulderSwitch = getBtn(0, 1);
 
     //secondary controls:
 
-    // controllerData.sLXStick = -getAxis(1, 1);
+    controllerData.sLXStick = -getAxis(1, 1);
     controllerData.sLYStick = -getAxis(1, 1);
-    // controllerData.sRXStick = -getAxis(1, 5);
+    controllerData.sRXStick = -getAxis(1, 5);
     controllerData.sRYStick = -getAxis(1, 5);
 
-    // controllerData.sLStickBtn = ;
-    // controllerData.sRStickBtn = ;
+    controllerData.sLStickBtn = getBtn(1, 9);
+    controllerData.sRStickBtn = getBtn(1, 10);
 
     controllerData.sLTrigger = getAxis(1, 2);
     controllerData.sRTrigger = getAxis(1, 3);
@@ -138,9 +138,31 @@ void Controller::updateControlsData(ControllerData &controllerData)
     // controls:
 
     // drivebase:
-    controllerData.lDrive = controllerData.pLYStick;
-    controllerData.rDrive = controllerData.pRYStick;
-    controllerData.dbInverted = false;
+    // note: when pRShoulderSwitch is held, driving is sensitive to turning, while not held (default driving mode) driving is less sensitive to turning and good for quick staright movements and steady arcs (won't turn super easily)
+    controllerData.turnResponsive = controllerData.pRShoulderSwitch;
+    if (controllerData.turnResponsive)
+    {
+        controllerData.maxStraight = 1;
+        controllerData.maxTurn = 1;
+    }
+    else
+    {
+        controllerData.maxStraight = 1;
+        controllerData.maxTurn = 0.3;
+    }
+
+    controllerData.dbInverted = controllerData.pLShoulderSwitch;
+    // if you're inverted then you swtich sides for driving so it's intuitive
+    if (controllerData.dbInverted)
+    {
+        controllerData.lDrive = -controllerData.pRYStick;
+        controllerData.rDrive = -controllerData.pLYStick;
+    }
+    else
+    {
+        controllerData.lDrive = controllerData.pLYStick;
+        controllerData.rDrive = controllerData.pRYStick;
+    }
 
     // intake:
     controllerData.mIntakeDown = controllerData.sRBumper;

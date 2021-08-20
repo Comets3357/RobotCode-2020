@@ -17,9 +17,12 @@ struct ControllerData
     bool shootingMode = false;
 
     // drivebase:
-    double lDrive;
-    double rDrive;
-    bool dbInverted;
+    double lDrive = 0;
+    double rDrive = 0;
+    bool turnResponsive = false;
+    bool dbInverted = false;
+    double maxStraight = 1;
+    double maxTurn = 0.4;
 
     // indexer:
     bool mIndexer;

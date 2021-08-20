@@ -81,8 +81,8 @@ void Drivebase::teleopControl(const RobotData &robotData)
     double tempRDrive = robotData.controllerData.rDrive;
 
     // converts from tank to arcade drive, limits the difference between left and right drive
-    double frontBack = cStraight * (tempLDrive + tempRDrive) / 2;
-    double leftRight = cTurn * (tempRDrive - tempLDrive) / 2;
+    double frontBack = robotData.controllerData.maxStraight * (tempLDrive + tempRDrive) / 2;
+    double leftRight = robotData.controllerData.maxTurn * (tempRDrive - tempLDrive) / 2;
 
     //deadzone NOT needed for drone controller
     if (tempLDrive <= -0.08 || tempLDrive >= 0.08)
@@ -101,12 +101,6 @@ void Drivebase::teleopControl(const RobotData &robotData)
     else
     {
         tempRDrive = 0;
-    }
-
-    if (robotData.controllerData.dbInverted)
-    {
-        tempLDrive *= -1;
-        tempRDrive *= -1;
     }
 
     //set as percent vbus

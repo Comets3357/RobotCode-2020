@@ -28,8 +28,6 @@ public:
     void DisabledInit();
 
 private:
-    const double cStraight = 1;
-    const double cTurn = 0.4;
 
     double setPoint; //for pid tuning
 

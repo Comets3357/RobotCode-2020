@@ -141,17 +141,20 @@ void Controller::updateControlsData(ControllerData &controllerData)
 
     // drivebase:
     // note: when pRShoulderSwitch is held, driving is sensitive to turning, while not held (default driving mode) driving is less sensitive to turning and good for quick staright movements and steady arcs (won't turn super easily)
-    controllerData.turnResponsive = controllerData.pRShoulderSwitch;
+
+    controllerData.turnResponsive = getAxis(0, 3);
     if (controllerData.turnResponsive)
     {
         controllerData.maxStraight = 1;
-        controllerData.maxTurn = 1;
+        controllerData.maxTurn = 0.75;
     }
     else
     {
         controllerData.maxStraight = 1;
-        controllerData.maxTurn = 0.3;
+        controllerData.maxTurn = 0.25;
     }
+
+    frc::SmartDashboard::PutBoolean("turnResponsive", controllerData.turnResponsive);
 
     controllerData.dbInverted = controllerData.pLShoulderSwitch;
     // if you're inverted then you swtich sides for driving so it's intuitive
@@ -172,28 +175,35 @@ void Controller::updateControlsData(ControllerData &controllerData)
     controllerData.mIntakeRollersBackward = ((controllerData.sRTrigger > 0.5) && controllerData.shift);
     controllerData.saIntake = (controllerData.sRTrigger > 0.5);
     controllerData.saIntakeBackward = ((controllerData.sLTrigger > 0.5) && !controllerData.shift);
-    
+
     //shooter:
     controllerData.mShooterFlyWheel = controllerData.sBBtn;
     controllerData.mSetHood = controllerData.sRYStick;
     controllerData.mSetTurret = controllerData.sLYStick;
 
     //limelight:
-    if(getPOV(1,0) == 180){
+    if (getPOV(1, 0) == 180)
+    {
         controllerData.roughHood += 1;
-    }else if(secondary.GetPOV(0) == 0){
+    }
+    else if (secondary.GetPOV(0) == 0)
+    {
         controllerData.roughHood -= 1;
     }
 
-    if(getPOV(1,0) == 90){
+    if (getPOV(1, 0) == 90)
+    {
         controllerData.roughTurret = 1;
-    }else if(secondary.GetPOV(0) == 270){
-        controllerData.roughTurret = -1;
-    }else{
-        controllerData.roughTurret = 0;
-
     }
-    
+    else if (secondary.GetPOV(0) == 270)
+    {
+        controllerData.roughTurret = -1;
+    }
+    else
+    {
+        controllerData.roughTurret = 0;
+    }
+
     // indexer:
     controllerData.mIndexer = ((controllerData.sLTrigger > 0.5) && !controllerData.shift);
     controllerData.mIndexerBackwards = ((controllerData.sLTrigger > 0.5) && controllerData.shift);

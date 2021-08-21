@@ -67,6 +67,8 @@ double Controller::getAxis(int js, int index)
 // for updating states of button variables
 void Controller::updateBtnData(ControllerData &controllerData)
 {
+    frc::SmartDashboard::PutBoolean("manual mode", controllerData.manualMode);
+
     // primary controls:
 
     if (frc::DriverStation::GetInstance().GetJoystickName(0) == "FrSky Taranis Joystick")

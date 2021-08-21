@@ -45,10 +45,10 @@ void Shooter::RobotInit()
 
 
 
-    setShooterPID(shooterFlywheelM_pidController, 0, 0.0012, 0, 0.02, 0.0002); //first pid for high velocity shooting
+    setShooterPID(shooterFlywheelM_pidController, 0, 0.0007, 0, 0, 0.00025); //first pid for high velocity shooting
     setShooterPID(shooterFlywheelM_pidController, 1, 0, 0, 0, 0.0002); //second pid for low constant velocity 
-    setShooterPID(shooterHood_pidController, 0, 0.1, 0, 0, 0);
-    setShooterPID(shooterTurret_pidController, 0, 0.09, 0, 1, 0);
+    setShooterPID(shooterHood_pidController, 0, 0.085, 0, 0.0001, 0);
+    setShooterPID(shooterTurret_pidController, 0, 0.3, 0, 1, 0);
     setShooterPID(shooterKick_pidController, 0, 0, 0, 0, 0);
 
     shooterHoodPOS.SetPosition(0);
@@ -66,11 +66,11 @@ void Shooter::RobotInit()
     //rev::CANSparkMaxLowLevel::EnableExternalUSBControl(true);
 
     //zeros hood at the begining
-    setHood(-0.1);
-    if(getHoodLimitSwitch()){
-        setHoodPos(0);
-        setHood(0);
-    }
+    // setHood(-0.1);
+    // if(getHoodLimitSwitch()){
+    //     setHoodPos(0);
+    //     setHood(0);
+    // }
 } 
 
 
@@ -81,18 +81,20 @@ void Shooter::RobotPeriodic(const RobotData &robotData, ShooterData &shooterData
     // frc::SmartDashboard::PutNumber("turret Position",  getTurretPos()); 
     // frc::SmartDashboard::PutNumber("calc hood pos",  robotData.calcHoodPos); 
 
-    if(!robotData.controllerData.climbMode){
-        if(robotData.controllerData.manualMode){
-            manualMode(robotData);
-        } else {
-            semiAutoMode(robotData, shooterData);
-        }
-    }else{
-        setHood(0);
-        setTurret(0);
-        setWheel(0);
-        setKick(0);
+    // if(!robotData.controllerData.climbMode){
+        
+    // }else{
+    //     setHood(0);
+    //     setTurret(0);
+    //     setWheel(0);
+    //     setKick(0);
 
+    // }
+
+    if(robotData.controllerData.manualMode){
+        manualMode(robotData);
+    } else {
+        semiAutoMode(robotData, shooterData);
     }
 
 }
@@ -109,11 +111,11 @@ void Shooter::semiAutoMode(const RobotData &robotData, ShooterData &shooterData)
 
    //retreive controller input
 
-    if(getTurretLimitSwitch()){ //for the beginning of the math zero the turret 
-        setTurretPos(0);
+    if(true){ //for the beginning of the math zero the turret 
+        //setTurretPos(0);
         shooterData.isZero = true;
     }else if(!robotData.shooterData.isZero){
-        setTurret(-0.1);
+        //setTurret(-0.1);
     }else if(robotData.shooterData.isZero){
         
         //adding the two left/right pov buttons to turn the turret left/right
@@ -161,7 +163,7 @@ void Shooter::semiAutoMode(const RobotData &robotData, ShooterData &shooterData)
             //set the turret to face forward
             shooterTurret_pidController.SetReference(12 + (robotData.shooterData.roughAim*4.5), rev::ControlType::kPosition);
             //spins up flywheel beforehand
-            if(robotData.controllerData.sBBtn){
+            if(robotData.controllerData.mShooterFlyWheel){
                 shooterFlywheelM_pidController.SetReference(3400, rev::ControlType::kVelocity);
 
             }else{
@@ -177,11 +179,11 @@ void Shooter::semiAutoMode(const RobotData &robotData, ShooterData &shooterData)
             shooterData.readyShoot = false;
 
             //zeros the hood after
-            setHood(-0.2);
-            if(getHoodLimitSwitch()){
-                setHoodPos(0);
-                setHood(0);
-            }
+            // setHood(-0.2);
+            // if(getHoodLimitSwitch()){
+            //     setHoodPos(0);
+            //     setHood(0);
+            // }
 
         }
 

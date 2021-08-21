@@ -6,6 +6,7 @@ void Robot::RobotInit()
     gyro.RobotInit(robotData.gyroData);
 
     drivebase.RobotInit();
+    shooter.RobotInit();
 }
 
 void Robot::RobotPeriodic()
@@ -38,6 +39,7 @@ void Robot::DisabledInit()
     timer.DisabledInit();
 
     drivebase.DisabledInit();
+    shooter.DisabledInit();
 }
 
 void Robot::DisabledPeriodic() {}

@@ -35,6 +35,9 @@ void Indexer::updateData(const RobotData &robotData, IndexerData &indexerData)
     indexerData.currentGapSensorState = indexerGapSensor.Get();
 
     frc::SmartDashboard::PutNumber("ball count", indexerData.powerCellCount);
+    frc::SmartDashboard::PutBoolean("is full", indexerData.isFull);
+    frc::SmartDashboard::PutBoolean("is sensor triggered", indexerData.pauseIntake);
+    frc::SmartDashboard::PutBoolean("pause intake", indexerData.pauseIntake);
     frc::SmartDashboard::PutNumber("sensor transition", indexerData.sensorTransition);
 }
 
@@ -58,12 +61,21 @@ void Indexer::semiAuto(const RobotData &robotData, IndexerData &indexerData)
 {
     if (robotData.controllerData.saEjectBallsBackwards)
     {
-        indexerBelts.Set(-ejectBallSpeed);
-
+        indexerData.isFull = false;
         indexerData.powerCellCount = 0;
+        indexerBelts.Set(-ejectBallSpeed);
     }
-    else if ((!indexerData.currentFirstSensorState || !indexerData.currentGapSensorState) && indexerData.powerCellCount < 3)
+    else if (robotData.shooterData.readyShoot)
     {
+        indexerData.isFull = false;
+        indexerData.powerCellCount = 0;
+        indexerBelts.Set(indexerBeltsSpeed);
+    }
+    else if ((!indexerData.currentFirstSensorState || !indexerData.currentGapSensorState) && !indexerData.isFull)
+    {
+        indexerBelts.Set(indexerBeltsSpeed);
+        indexerData.pauseIntake = true;
+
         if (!indexerData.currentFirstSensorState && indexerData.currentGapSensorState && indexerData.sensorTransition == 0)
         {
             indexerData.sensorTransition = 1;
@@ -79,13 +91,20 @@ void Indexer::semiAuto(const RobotData &robotData, IndexerData &indexerData)
         else if (indexerData.sensorTransition == 3)
         {
             indexerData.sensorTransition = 0;
-            indexerData.powerCellCount++;
-        }
 
-        indexerBelts.Set(indexerBeltsSpeed);
+            if (indexerData.powerCellCount < 3)
+            {
+                indexerData.powerCellCount++;
+            }
+            if (indexerData.powerCellCount == 3)
+            {
+                indexerData.isFull = true;
+            }
+        }
     }
     else
     {
+        indexerData.sensorTransition = 0;
         indexerBelts.Set(0);
     }
 }

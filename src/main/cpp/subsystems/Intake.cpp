@@ -54,7 +54,6 @@ void Intake::manual(const RobotData &robotData, IntakeData &intakeData)
         if (intakePivotEncoder.GetPosition() < 12)
         {
             intakePivot.Set(intakePivotSpeed);
-            
         }
         // once you're down
         else
@@ -65,7 +64,7 @@ void Intake::manual(const RobotData &robotData, IntakeData &intakeData)
     // otherise, bring the intake back up slowly
     else
     {
-        
+
         if (intakePivotEncoder.GetPosition() > 0)
         {
             intakePivot.Set(-intakePivotSpeed);
@@ -88,18 +87,24 @@ void Intake::manual(const RobotData &robotData, IntakeData &intakeData)
     {
         intakeRollers.Set(0);
     }
-    
 }
 
 void Intake::semiAuto(const RobotData &robotData, IntakeData &intakeData)
 {
-    if (robotData.controllerData.saIntake)
+    if (robotData.controllerData.saIntake && !robotData.indexerData.isFull)
     {
         // pivot down
         if (intakePivotEncoder.GetPosition() < 12)
         {
             intakePivot.Set(intakePivotSpeed);
-            intakeRollers.Set(intakeRollersSpeed);
+            if (robotData.indexerData.pauseIntake)
+            {
+                intakeRollers.Set(0);
+            }
+            else
+            {
+                intakeRollers.Set(intakeRollersSpeed);
+            }
         }
         // once you're down
         else

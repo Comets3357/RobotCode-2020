@@ -76,21 +76,12 @@ void Indexer::semiAuto(const RobotData &robotData, IndexerData &indexerData)
         {
             indexerData.sensorTransition = 3;
         }
-        else
+        else if (indexerData.sensorTransition == 3)
         {
             indexerData.sensorTransition = 0;
-        }
-
-        indexerBelts.Set(indexerBeltsSpeed);
-
-        if (indexerData.currentFirstSensorState && !indexerData.currentGapSensorState && indexerData.sensorTransition == 3)
-        {
             indexerData.powerCellCount++;
-            indexerData.sensorTransition = 0;
         }
-    }
-    else if (robotData.shooterData.readyShoot)
-    {
+
         indexerBelts.Set(indexerBeltsSpeed);
     }
     else

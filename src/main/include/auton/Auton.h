@@ -1,12 +1,11 @@
 #pragma once
 
-#include <frc/smartdashboard/SendableChooser.h> 
+#include <frc/smartdashboard/SendableChooser.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
 struct RobotData;
 struct ControllerData;
 struct DrivebaseData;
-
 
 enum AutonSelect
 {
@@ -28,9 +27,6 @@ struct AutonData
     double initialLDBPos;
     double initialRDBPos;
     double initialAngle;
-
-    
-
 };
 
 class Auton
@@ -48,9 +44,6 @@ private:
 
     void driveStraight(double distance, const RobotData &robotData, DrivebaseData &drivebaseData, ControllerData &controllerData, AutonData &autonData);
     void checkDriveStraight(const RobotData &robotData, AutonData &autonData);
-    
 
     frc::SendableChooser<AutonSelect> autonSelector;
-
-
 };

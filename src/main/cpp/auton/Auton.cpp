@@ -10,6 +10,8 @@ void Auton::RobotInit()
     autonSelector.AddOption("Shoot and Drive Towards Driver Station", AutonSelect::autonSelect_shootAndDriveToDriverStation);
     autonSelector.AddOption("Shoot and Drive Towards Rendezvous", AutonSelect::autonSelect_shootAndDriveToRendezvous);
     autonSelector.SetDefaultOption("Potato", AutonSelect::autonSelect_potato);
+
+    frc::SmartDashboard::PutData("Auto", &autonSelector);
 }
 
 void Auton::AutonomousInit(const RobotData &robotData, AutonData &autonData)
@@ -17,18 +19,17 @@ void Auton::AutonomousInit(const RobotData &robotData, AutonData &autonData)
     // making sure the auton sequences start at the right step and setting the auton choice based on dashboard selection
     autonData.autonStep = 0;
     autonData.autonSelection = autonSelector.GetSelected();
-    
 }
 
 void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData, ControllerData &controllerData, DrivebaseData &drivebaseData)
 {
     // for debugging
-    // frc::SmartDashboard::PutNumber("autonStep", autonData.autonStep);
-    // frc::SmartDashboard::PutNumber("autonSelection", autonData.autonSelection);
+    frc::SmartDashboard::PutNumber("autonStep", autonData.autonStep);
+    frc::SmartDashboard::PutNumber("autonSelection", autonData.autonSelection);
 
     // for autons, the robot MUST be in semi auto mode
 
-    switch(autonData.autonSelection)
+    switch (autonData.autonSelection)
     {
     case autonSelect_potato:
         endAllTasks(robotData, controllerData);
@@ -90,7 +91,7 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
             controllerData.driveMode = driveMode_driveStraight;
             checkDriveStraight(robotData, autonData);
             break;
-        
+
         default:
             endAllTasks(robotData, controllerData);
             break;
@@ -125,36 +126,44 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
         }
         break;
 
-        default:
-            endAllTasks(robotData, controllerData);
-            break;
+    default:
+        endAllTasks(robotData, controllerData);
+        break;
     }
-
 }
 
-void Auton::startDelay(double duration, const RobotData &robotData){
+void Auton::startDelay(double duration, const RobotData &robotData)
+{
     delayFinal = robotData.timerData.secSinceEnabled + duration;
 }
 
-void Auton::checkDelay(const RobotData &robotData, AutonData &autonData){
-    if (robotData.timerData.secSinceEnabled > delayFinal){
+void Auton::checkDelay(const RobotData &robotData, AutonData &autonData)
+{
+    if (robotData.timerData.secSinceEnabled > delayFinal)
+    {
         autonData.autonStep++;
     }
 }
 
-void Auton::endAllTasks(const RobotData &robotData, ControllerData &controllerData){
+void Auton::endAllTasks(const RobotData &robotData, ControllerData &controllerData)
+{
     controllerData.shootingMode = false;
     controllerData.driveMode = driveMode_potato;
 }
 
-void Auton::driveStraight(double distance, const RobotData &robotData, DrivebaseData &drivebaseData, ControllerData &controllerData, AutonData &autonData){
+void Auton::driveStraight(double distance, const RobotData &robotData, DrivebaseData &drivebaseData, ControllerData &controllerData, AutonData &autonData)
+{
     drivebaseData.desiredDistance = distance;
+    frc::SmartDashboard::PutNumber("desired distance", drivebaseData.desiredDistance);
     controllerData.driveMode = driveMode_driveStraight;
+    frc::SmartDashboard::PutNumber("drivemode", controllerData.driveMode);
     checkDriveStraight(robotData, autonData);
 }
 
-void Auton::checkDriveStraight(const RobotData &robotData, AutonData &autonData){
-    if(robotData.drivebaseData.driveStraightCompleted){
+void Auton::checkDriveStraight(const RobotData &robotData, AutonData &autonData)
+{
+    if (robotData.drivebaseData.driveStraightCompleted)
+    {
         autonData.autonStep++;
     }
 }

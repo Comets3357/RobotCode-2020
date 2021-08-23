@@ -9,7 +9,7 @@ struct RobotData;
 enum DriveMode
 {
     driveMode_teleop,
-    driveMode_potato, 
+    driveMode_potato,
     driveMode_driveStraight
 };
 
@@ -24,10 +24,18 @@ struct ControllerData
     bool shootingMode = false;
 
     // drivebase:
-    double lDrive;
-    double rDrive;
-    bool dbInverted;
+    double lDrive = 0;
+    double rDrive = 0;
+    bool turnResponsive = false;
+    bool dbInverted = false;
+    double maxStraight = 1;
+    double maxTurn = 0.4;
     DriveMode driveMode = driveMode_potato;
+
+    // indexer:
+    bool mIndexer;
+    bool mIndexerBackwards;
+    bool saEjectBallsBackwards;
 
     // intake:
     bool mIntakeDown;
@@ -112,4 +120,3 @@ private:
     frc::Joystick primary{0};
     frc::Joystick secondary{1};
 };
-

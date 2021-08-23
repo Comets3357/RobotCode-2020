@@ -3,17 +3,18 @@
 void Robot::RobotInit()
 {
     timer.RobotInit(robotData.timerData);
+    gyro.RobotInit(robotData.gyroData);
     auton.RobotInit();
 
     drivebase.RobotInit();
     intake.RobotInit();
     shooter.RobotInit();
-    
 }
 
 void Robot::RobotPeriodic()
 {
     timer.RobotPeriodic(robotData.timerData);
+    gyro.RobotPeriodic(robotData.gyroData);
 
     if (IsEnabled())
     {
@@ -25,15 +26,15 @@ void Robot::RobotPeriodic()
     }
 }
 
-void Robot::AutonomousInit() 
+void Robot::AutonomousInit()
 {
     auton.AutonomousInit(robotData, robotData.autonData);
 }
-void Robot::AutonomousPeriodic() 
+void Robot::AutonomousPeriodic()
 {
     auton.AutonomousPeriodic(robotData, robotData.autonData, robotData.controllerData, robotData.drivebaseData);
 }
-void Robot::TeleopInit() 
+void Robot::TeleopInit()
 {
     controller.TeleopInit(robotData.controllerData);
 }
@@ -48,6 +49,7 @@ void Robot::DisabledInit()
     timer.DisabledInit();
 
     drivebase.DisabledInit();
+    shooter.DisabledInit();
 }
 
 void Robot::DisabledPeriodic() {}

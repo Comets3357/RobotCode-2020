@@ -11,6 +11,8 @@
 
 #include "subsystems/Drivebase.h"
 #include "subsystems/Intake.h"
+#include "subsystems/Shooter.h"
+#include "subsystems/Indexer.h"
 
 //Robot class inherits from TimedRobot
 class Robot : public frc::TimedRobot

@@ -10,19 +10,16 @@
 
 struct RobotData;
 
-
-
 struct DrivebaseData
 {
     double currentLDBPos;
     double currentRDBPos;
 
-    //read from the encoders
     double lDriveVel;
     double rDriveVel;
 
     //for autons
-    
+
     double setLVelocity;
     double setRVelocity;
 
@@ -42,17 +39,21 @@ public:
     void RobotPeriodic(const RobotData &robotData, DrivebaseData &drivebaseData);
     void DisabledInit();
 
+private:
+    // double setPoint; //for pid tuning
+
     //set during autons
     double lDrive;
     double rDrive;
 
-private:
     const double cStraight = 1;
     const double cTurn = 0.4;
 
     void updateData(const RobotData &robotData, DrivebaseData &drivebaseData);
-    void teleopControl(const RobotData &robotData); //vbus
+    void teleopControl(const RobotData &robotData);
     void autonControl(const RobotData &robotData); //velocity
+
+    // void pidTuningControl(const RobotData &robotData);
 
     void potato(const RobotData &robotData);
     void driveStraight(const RobotData &robotData, DrivebaseData &drivebaseData);

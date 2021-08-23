@@ -23,6 +23,8 @@ public:
     void RobotInit(GyroData &gyroData);
     void RobotPeriodic(GyroData &gyroData);
 
+
+
 private:
 #ifdef __FRC_ROBORIO__
     frc::ADIS16470_IMU gyro{};

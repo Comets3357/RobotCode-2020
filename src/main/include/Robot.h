@@ -35,6 +35,7 @@ private:
 
     // other
     Controller controller{};
+    Auton auton{};
     Gyro gyro{};
     Limelight limelight{};
     OtherComponents otherComponents{};

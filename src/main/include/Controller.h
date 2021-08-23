@@ -6,6 +6,13 @@
 
 struct RobotData;
 
+enum DriveMode
+{
+    driveMode_teleop,
+    driveMode_potato,
+    driveMode_driveStraight
+};
+
 struct ControllerData
 {
     // controls data:
@@ -23,6 +30,7 @@ struct ControllerData
     bool dbInverted = false;
     double maxStraight = 1;
     double maxTurn = 0.4;
+    DriveMode driveMode = driveMode_potato;
 
     // indexer:
     bool mIndexer;
@@ -97,6 +105,7 @@ class Controller
 
 public:
     void TeleopPeriodic(const RobotData &robotData, ControllerData &controllerData);
+    void TeleopInit(ControllerData &controllerData);
 
 private:
     void updateBtnData(ControllerData &controllerData);

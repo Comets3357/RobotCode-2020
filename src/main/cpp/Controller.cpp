@@ -10,6 +10,11 @@
  * button index starts at 1
  */
 
+void Controller::TeleopInit(ControllerData &controllerData)
+{
+    controllerData.driveMode = driveMode_teleop;
+}
+
 void Controller::TeleopPeriodic(const RobotData &robotData, ControllerData &controllerData)
 {
     updateBtnData(controllerData);

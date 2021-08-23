@@ -6,6 +6,8 @@
 #include <frc/TimedRobot.h>
 #include <rev/CANSparkMax.h>
 #include <rev/CANEncoder.h>
+#include <frc/AnalogPotentiometer.h>
+
 
 struct RobotData;
 
@@ -54,6 +56,8 @@ private:
     double getHoodOffset();
     bool getTurretLimitSwitch();
     bool getHoodLimitSwitch();
+    double getTurretPot();
+
 
     double turretSnapshot;
 
@@ -83,9 +87,7 @@ private:
     rev::CANEncoder shooterWheelSPOS = shooterFlywheelS.GetEncoder();
     rev::CANEncoder shooterKickPOS = shooterKick.GetEncoder();
 
-    //limit switches;
-        rev::CANDigitalInput turretReverseLimit = shooterTurret.GetReverseLimitSwitch(rev::CANDigitalInput::LimitSwitchPolarity::kNormallyClosed);
-        rev::CANDigitalInput hoodReverseLimit = shooterHood.GetReverseLimitSwitch(rev::CANDigitalInput::LimitSwitchPolarity::kNormallyClosed);
+    frc::AnalogPotentiometer turretPot{0, 180, 30};
 
     rev::CANPIDController shooterFlywheelM_pidController = shooterFlywheelM.GetPIDController();
     rev::CANPIDController shooterFlywheelS_pidController = shooterFlywheelS.GetPIDController();

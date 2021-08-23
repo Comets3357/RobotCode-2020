@@ -65,12 +65,8 @@ void Shooter::RobotInit()
 
     //rev::CANSparkMaxLowLevel::EnableExternalUSBControl(true);
 
-    //zeros hood at the begining
-    // setHood(-0.1);
-    // if(getHoodLimitSwitch()){
-    //     setHoodPos(0);
-    //     setHood(0);
-    // }
+    setHoodPos(0);
+
 } 
 
 
@@ -104,6 +100,8 @@ void Shooter::updateData(const RobotData &robotData, ShooterData &shooterData){
     shooterData.flywheelVelocity = getWheelVel();
     shooterData.turretPosition = getTurretPos();
     shooterData.hoodPosition = getHoodPos();
+    frc::SmartDashboard::PutNumber("Turret Potentiometer", getTurretPot());
+
 }
 
 
@@ -111,11 +109,16 @@ void Shooter::semiAutoMode(const RobotData &robotData, ShooterData &shooterData)
 
    //retreive controller input
 
-    if(true){ //for the beginning of the math zero the turret 
-        //setTurretPos(0);
+    if(getTurretPot() > 3 && getTurretPot() < 4){ //for the beginning of the math zero the turret 
+        setTurretPos(0);
+        setTurret(0);
         shooterData.isZero = true;
     }else if(!robotData.shooterData.isZero){
-        //setTurret(-0.1);
+        if(getTurretPot() > 4){
+            setTurret(-0.1);
+        }else if(getTurretPot() < 2.5){
+            setTurret(0.1);
+        }
     }else if(robotData.shooterData.isZero){
         
         //adding the two left/right pov buttons to turn the turret left/right
@@ -178,12 +181,10 @@ void Shooter::semiAutoMode(const RobotData &robotData, ShooterData &shooterData)
 
             shooterData.readyShoot = false;
 
-            //zeros the hood after
-            // setHood(-0.2);
-            // if(getHoodLimitSwitch()){
-            //     setHoodPos(0);
-            //     setHood(0);
-            // }
+            setHood(-0.2);
+            if(getHoodPos() < 3){
+                setHood(0);
+            }
 
         }
 
@@ -223,14 +224,6 @@ double Shooter::getTurretPos(){
 double Shooter::getWheelPos(){
     return shooterWheelMPOS.GetPosition();
 } 
-
-bool Shooter::getTurretLimitSwitch(){
-    return turretReverseLimit.Get();
-}
-bool Shooter::getHoodLimitSwitch(){
-    return hoodReverseLimit.Get();
-}
-
 void Shooter::setHood(double power){
     shooterHood.Set(power);
 }
@@ -246,6 +239,9 @@ void Shooter::setKick(double power){
 }
 double Shooter::getWheelVel(){
     return shooterWheelMPOS.GetVelocity();
+}
+double Shooter::getTurretPot(){
+    return turretPot.Get();
 }
 
 

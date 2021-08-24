@@ -22,6 +22,8 @@ struct ShooterData
 
     bool intakeEncoderPositionZero;
 
+
+
     double hoodPosition;
     double turretPosition;
     double flywheelVelocity;
@@ -43,9 +45,6 @@ public:
     void RobotPeriodic(const RobotData &robotData, ShooterData &shooterData);
     void DisabledInit();
         
-    
-
-
 private:
     void updateData(const RobotData &robotData, ShooterData &shooterData);
     //void teleopControl(const RobotData &robotData);
@@ -60,6 +59,9 @@ private:
 
 
     double turretSnapshot;
+    int tickcount;
+    double currentSnapshot;
+    bool spinup;
 
     void semiAutoMode(const RobotData &robotData, ShooterData &shooterData);
     void manualMode(const RobotData &robotData);

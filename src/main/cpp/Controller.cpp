@@ -133,9 +133,11 @@ void Controller::updateControlsData(ControllerData &controllerData)
     {
         controllerData.climbMode = !controllerData.climbMode;
     }
+    controllerData.shootingMode = controllerData.sYBtn;
 
-    frc::SmartDashboard::PutBoolean("sRCenterBtnToggled", controllerData.sRCenterBtnToggled);
-    frc::SmartDashboard::PutBoolean("shift", controllerData.shift);
+
+    // frc::SmartDashboard::PutBoolean("sRCenterBtnToggled", controllerData.sRCenterBtnToggled);
+    // frc::SmartDashboard::PutBoolean("shift", controllerData.shift);
 
     // controls:
 
@@ -154,7 +156,7 @@ void Controller::updateControlsData(ControllerData &controllerData)
         controllerData.maxTurn = 0.25;
     }
 
-    frc::SmartDashboard::PutBoolean("turnResponsive", controllerData.turnResponsive);
+    //frc::SmartDashboard::PutBoolean("turnResponsive", controllerData.turnResponsive);
 
     controllerData.dbInverted = controllerData.pLShoulderSwitch;
     // if you're inverted then you swtich sides for driving so it's intuitive

@@ -97,14 +97,7 @@ void Intake::semiAuto(const RobotData &robotData, IntakeData &intakeData)
         if (intakePivotEncoder.GetPosition() < 12)
         {
             intakePivot.Set(intakePivotSpeed);
-            if (robotData.indexerData.pauseIntake)
-            {
-                intakeRollers.Set(0);
-            }
-            else
-            {
-                intakeRollers.Set(intakeRollersSpeed);
-            }
+            intakeRollers.Set(intakeRollersSpeed);
         }
         // once you're down
         else

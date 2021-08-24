@@ -74,7 +74,6 @@ void Indexer::semiAuto(const RobotData &robotData, IndexerData &indexerData)
     else if ((!indexerData.currentFirstSensorState || !indexerData.currentGapSensorState) && !indexerData.isFull)
     {
         indexerBelts.Set(indexerBeltsSpeed);
-        indexerData.pauseIntake = true;
 
         if (!indexerData.currentFirstSensorState && indexerData.currentGapSensorState && indexerData.sensorTransition == 0)
         {

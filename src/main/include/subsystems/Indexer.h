@@ -20,7 +20,6 @@ struct IndexerData
     bool currentFirstSensorState;
     bool currentGapSensorState;
 
-    bool pauseIntake = false;
     bool isFull = false;
 };
 

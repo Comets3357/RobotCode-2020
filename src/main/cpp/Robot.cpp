@@ -1,4 +1,5 @@
 #include "Robot.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 void Robot::RobotInit()
 {
@@ -6,6 +7,7 @@ void Robot::RobotInit()
     gyro.RobotInit(robotData.gyroData);
     auton.RobotInit();
     drivebase.RobotInit();
+    climb.RobotInit();
     shooter.RobotInit();
     intake.RobotInit();
 }
@@ -22,6 +24,7 @@ void Robot::RobotPeriodic()
         otherComponents.RobotPeriodic(robotData.otherComponentsData);
 
         drivebase.RobotPeriodic(robotData, robotData.drivebaseData);
+        climb.Periodic(robotData);
         indexer.RobotPeriodic(robotData, robotData.indexerData);
         intake.RobotPeriodic(robotData, robotData.intakeData);
         shooter.RobotPeriodic(robotData, robotData.shooterData);
@@ -44,6 +47,8 @@ void Robot::TeleopInit()
 void Robot::TeleopPeriodic()
 {
     controller.TeleopPeriodic(robotData, robotData.controllerData);
+  
+
 }
 
 void Robot::DisabledInit()

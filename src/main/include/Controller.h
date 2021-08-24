@@ -53,6 +53,10 @@ struct ControllerData
     int roughHood = 0;
     int roughTurret = 0;
 
+    // climb:
+    bool lift;
+    bool climb;
+
     // btn data:
     // L = left, R = right, p = primary, s = secondary, Btn = button
 

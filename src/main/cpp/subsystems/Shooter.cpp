@@ -64,13 +64,14 @@ void Shooter::RobotInit()
 
     setHoodPos(0);
     setTurretPos(0);
+}
 
 void Shooter::RobotPeriodic(const RobotData &robotData, ShooterData &shooterData)
 {
     updateData(robotData, shooterData);
-    frc::SmartDashboard::PutNumber("hood Position",  getHoodPos()); 
-    frc::SmartDashboard::PutNumber("turret Position",  getTurretPos()); 
-    frc::SmartDashboard::PutNumber("x axis",  robotData.limelightData.xOffset); 
+    frc::SmartDashboard::PutNumber("hood Position", getHoodPos());
+    frc::SmartDashboard::PutNumber("turret Position", getTurretPos());
+    frc::SmartDashboard::PutNumber("x axis", robotData.limelightData.xOffset);
 
     //frc::SmartDashboard::PutNumber("calc hood pos",  robotData.calcHoodPos);
 
@@ -128,20 +129,25 @@ void Shooter::semiAutoMode(const RobotData &robotData, ShooterData &shooterData)
             //Use PID to set Hood and Turret based off limelight values
             //shooterHood_pidController.SetReference(robotData.limelightData.calcHoodPos, rev::ControlType::kPosition);
             //shooterTurret_pidController.SetReference(robotData.limelightData.calcTurretPos + getTurretPos(), rev::ControlType::kPosition);
-            if(robotData.limelightData.xOffset > 3){
+            if (robotData.limelightData.xOffset > 3)
+            {
                 setTurret(-0.1);
-            }else if (robotData.limelightData.xOffset < 1){
+            }
+            else if (robotData.limelightData.xOffset < 1)
+            {
                 setTurret(0.1);
-            }else{
+            }
+            else
+            {
                 setTurret(0);
                 //shooterTurret_pidController.SetReference(robotData.limelightData.calcTurretPos + getTurretPos(), rev::ControlType::kPosition);
-
 
                 shooterHood_pidController.SetReference(robotData.limelightData.calcHoodPos, rev::ControlType::kPosition);
                 shooterFlywheelM_pidController.SetReference(-3400, rev::ControlType::kVelocity);
 
                 //once the shooter has high enough velocity and is aimed correctly tell robot to begin shooting (start indexer)
-                if ((getWheelVel() < robotData.shooterData.targetVelocity)){
+                if ((getWheelVel() < robotData.shooterData.targetVelocity))
+                {
                     shooterData.readyShoot = true;
                     setKick(0.5);
                 }
@@ -151,8 +157,6 @@ void Shooter::semiAutoMode(const RobotData &robotData, ShooterData &shooterData)
                     setKick(0);
                 }
             }
-                 
-
         }
         shooterData.isZero = false;
     }
@@ -165,13 +169,20 @@ void Shooter::semiAutoMode(const RobotData &robotData, ShooterData &shooterData)
         //set the turret to face forward
         //shooterTurret_pidController.SetReference(12 + (robotData.shooterData.roughAim*4.5), rev::ControlType::kPosition);
         //spins up flywheel beforehand
-        if(robotData.controllerData.mShooterFlyWheel){
+        if (robotData.controllerData.mShooterFlyWheel)
+        {
             shooterFlywheelM_pidController.SetReference(-3400, rev::ControlType::kVelocity);
-        }else{
-            if(spinup){
-                if(getWheelVel() > -1200){ //once the flywheel reaches a low enough velocity begin constant velociy
+        }
+        else
+        {
+            if (spinup)
+            {
+                if (getWheelVel() > -1200)
+                {                                                                                       //once the flywheel reaches a low enough velocity begin constant velociy
                     shooterFlywheelM_pidController.SetReference(-1000, rev::ControlType::kVelocity, 1); //uses second pid
-                }else{
+                }
+                else
+                {
                     setWheel(0); //starts the shooting wheel slowing down
                 }
             }
@@ -213,10 +224,6 @@ void Shooter::semiAutoMode(const RobotData &robotData, ShooterData &shooterData)
         //     setHood(0);
         //     setHoodPos(0);
         // }
-
-
-        
-
     }
 }
 
@@ -234,14 +241,14 @@ void Shooter::manualMode(const RobotData &robotData)
     else
     {
         setWheel(0);
-        setHood(robotData.controllerData.mSetHood*.2);
+        setHood(robotData.controllerData.mSetHood * .2);
     }
 
-    if(robotData.controllerData.sABtn){
+    if (robotData.controllerData.sABtn)
+    {
         setTurretPos(0);
         setHoodPos(0);
     }
-
 }
 
 void Shooter::setHoodPos(double pos)

@@ -18,11 +18,9 @@ void Robot::RobotPeriodic()
     gyro.RobotPeriodic(robotData.gyroData);
     limelight.RobotPeriodic(robotData, robotData.limelightData);
 
-
     if (IsEnabled())
     {
         otherComponents.RobotPeriodic(robotData.otherComponentsData);
-
         drivebase.RobotPeriodic(robotData, robotData.drivebaseData);
         climb.Periodic(robotData);
         indexer.RobotPeriodic(robotData, robotData.indexerData);
@@ -47,8 +45,6 @@ void Robot::TeleopInit()
 void Robot::TeleopPeriodic()
 {
     controller.TeleopPeriodic(robotData, robotData.controllerData);
-  
-
 }
 
 void Robot::DisabledInit()

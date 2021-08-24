@@ -217,5 +217,5 @@ void Controller::updateControlsData(ControllerData &controllerData)
 
     // climb:
     controllerData.lift = controllerData.sXBtn;
-    controllerData.climb = controllerData.sYBtn;
+    //controllerData.climb = controllerData.sYBtn;
 }

@@ -33,7 +33,7 @@ double Limelight::calcHoodPOS(double verticalOffset, const RobotData& robotData)
  */
 double Limelight::calcTurretPOS(double horOffset){ 
     double x = horOffset;
-    return (x*0.144034);
+    return -2.69*x + 1.58;
 }
 
 /**

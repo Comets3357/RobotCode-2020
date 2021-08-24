@@ -134,7 +134,7 @@ void Controller::updateControlsData(ControllerData &controllerData)
     {
         controllerData.manualMode = !controllerData.manualMode;
     }
-    if (controllerData.sRCenterBtnToggled)
+    if (controllerData.sLCenterBtnToggled)
     {
         controllerData.climbMode = !controllerData.climbMode;
     }

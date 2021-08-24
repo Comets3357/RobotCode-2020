@@ -36,8 +36,6 @@ void Indexer::updateData(const RobotData &robotData, IndexerData &indexerData)
 
     frc::SmartDashboard::PutNumber("ball count", indexerData.powerCellCount);
     frc::SmartDashboard::PutBoolean("is full", indexerData.isFull);
-    frc::SmartDashboard::PutBoolean("is sensor triggered", indexerData.pauseIntake);
-    frc::SmartDashboard::PutBoolean("pause intake", indexerData.pauseIntake);
     frc::SmartDashboard::PutNumber("sensor transition", indexerData.sensorTransition);
 }
 
@@ -107,7 +105,8 @@ void Indexer::semiAuto(const RobotData &robotData, IndexerData &indexerData)
         indexerBelts.Set(0);
     }
 
-    if(robotData.shooterData.readyShoot){
+    if (robotData.shooterData.readyShoot)
+    {
         indexerBelts.Set(indexerBeltsSpeed);
     }
 }

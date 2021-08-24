@@ -17,8 +17,10 @@ struct IndexerData
     double currentIndexerPos;
     double currentIndexerVel;
 
-    double currentFirstSensorState;
-    double currentGapSensorState;
+    bool currentFirstSensorState;
+    bool currentGapSensorState;
+
+    bool isFull = false;
 };
 
 class Indexer

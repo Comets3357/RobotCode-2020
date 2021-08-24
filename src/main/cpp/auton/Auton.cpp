@@ -81,15 +81,18 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
             break;
         case 1:
             checkDelay(robotData, autonData);
+            frc::SmartDashboard::PutNumber("delayFinal", delayFinal);
+            frc::SmartDashboard::PutNumber("seconds since enabled", robotData.timerData.secSinceEnabled);
             break;
         case 2:
             controllerData.shootingMode = false;
             autonData.autonStep++;
             break;
         case 3:
-            drivebaseData.desiredDistance = -20;
-            controllerData.driveMode = driveMode_driveStraight;
-            checkDriveStraight(robotData, autonData);
+            driveStraight(-20, robotData, drivebaseData, controllerData, autonData);
+            // drivebaseData.desiredDistance = -20;
+            // controllerData.driveMode = driveMode_driveStraight;
+            // checkDriveStraight(robotData, autonData);
             break;
 
         default:
@@ -117,8 +120,9 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
             autonData.autonStep++;
             break;
         case 3:
-            drivebaseData.desiredDistance = 20;
-            controllerData.driveMode = driveMode_driveStraight;
+            // drivebaseData.desiredDistance = 20;
+            // controllerData.driveMode = driveMode_driveStraight;
+            driveStraight(20, robotData, drivebaseData, controllerData, autonData);
             break;
         default:
             endAllTasks(robotData, controllerData);
@@ -134,7 +138,9 @@ void Auton::AutonomousPeriodic(const RobotData &robotData, AutonData &autonData,
 
 void Auton::startDelay(double duration, const RobotData &robotData)
 {
-    delayFinal = robotData.timerData.secSinceEnabled + duration;
+
+    delayFinal = duration;
+    // delayFinal = robotData.timerData.secSinceEnabled + duration;
 }
 
 void Auton::checkDelay(const RobotData &robotData, AutonData &autonData)

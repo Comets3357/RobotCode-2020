@@ -1,10 +1,12 @@
 #include "Robot.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 void Robot::RobotInit()
 {
     timer.RobotInit(robotData.timerData);
 
     drivebase.RobotInit();
+    climb.RobotInit();
 }
 
 void Robot::RobotPeriodic()
@@ -16,6 +18,8 @@ void Robot::RobotPeriodic()
         otherComponents.RobotPeriodic(robotData.otherComponentsData);
 
         drivebase.RobotPeriodic(robotData, robotData.drivebaseData);
+        climb.Periodic(robotData);
+        frc::SmartDashboard::PutNumber("manual",  robotData.controllerData.manualMode);
     }
 }
 
@@ -26,6 +30,8 @@ void Robot::TeleopInit() {}
 void Robot::TeleopPeriodic()
 {
     controller.TeleopPeriodic(robotData, robotData.controllerData);
+  
+
 }
 
 void Robot::DisabledInit()

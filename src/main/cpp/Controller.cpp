@@ -14,6 +14,8 @@ void Controller::TeleopPeriodic(const RobotData &robotData, ControllerData &cont
 {
     updateBtnData(controllerData);
     updateControlsData(controllerData);
+    frc::SmartDashboard::PutBoolean("controller updating", true);
+    frc::SmartDashboard::PutNumber("sLYStick", controllerData.sLYStick);
 }
 
 bool Controller::getBtn(int js, int index)
@@ -123,7 +125,7 @@ void Controller::updateControlsData(ControllerData &controllerData)
 {
     // states:
     controllerData.shift = controllerData.sLBumper;
-    controllerData.manualMode = controllerData.sRCenterBtnToggled;
+    controllerData.manualMode = false;
     controllerData.climbMode = controllerData.sLCenterBtnToggled;
 
     // controls:

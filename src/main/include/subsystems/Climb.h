@@ -9,7 +9,7 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
-class ClimbSubsystem {
+class Climb {
     
     public:
 
@@ -25,7 +25,7 @@ class ClimbSubsystem {
         // Change SparkMax IDs
         static const int climbLiftID = 32;
 
-        rev::CANSparkMax climbLift{climbLiftID, rev::CANSparkMax::MotorType::kBrushless};
+        rev::CANSparkMax climbLift{32, rev::CANSparkMax::MotorType::kBrushless};
 
         rev::CANEncoder climbLiftPos = climbLift.GetEncoder();
 };

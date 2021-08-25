@@ -129,6 +129,8 @@ void Controller::updateBtnData(ControllerData &controllerData)
 void Controller::updateControlsData(ControllerData &controllerData)
 {
     // states:
+
+    frc::SmartDashboard::PutBoolean("climb mode", controllerData.climbMode);
     controllerData.shift = controllerData.sLBumper;
     if (controllerData.sRCenterBtnToggled)
     {

@@ -231,7 +231,10 @@ void Shooter::manualMode(const RobotData &robotData)
 {
 
     //make hood and turret moveable by joystick
-    setTurret(robotData.controllerData.mSetTurret * .2);
+    if(!robotData.controllerData.climbMode)
+    {
+        setTurret(robotData.controllerData.mSetTurret * .2);
+    }
 
     if (robotData.controllerData.mShooterFlyWheel)
     {

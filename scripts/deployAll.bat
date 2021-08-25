@@ -1,5 +1,5 @@
 @echo off
 rem Execute gradle deploy
 cd ..
-echo Building robot code
+echo Deploying robot code
 call gradlew deploy

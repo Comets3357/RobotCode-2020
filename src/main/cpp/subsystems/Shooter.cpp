@@ -1,7 +1,7 @@
 #include "subsystems/Shooter.h"
 #include "RobotData.h"
 
-#include <frc/Driverstation.h>
+#include <frc/DriverStation.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
 void Shooter::RobotInit()
@@ -231,7 +231,7 @@ void Shooter::manualMode(const RobotData &robotData)
 {
 
     //make hood and turret moveable by joystick
-    if(!robotData.controllerData.climbMode)
+    if (!robotData.controllerData.climbMode)
     {
         setTurret(robotData.controllerData.mSetTurret * .2);
     }

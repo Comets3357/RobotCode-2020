@@ -104,9 +104,4 @@ void Indexer::semiAuto(const RobotData &robotData, IndexerData &indexerData)
         indexerData.sensorTransition = 0;
         indexerBelts.Set(0);
     }
-
-    if (robotData.shooterData.readyShoot)
-    {
-        indexerBelts.Set(indexerBeltsSpeed);
-    }
 }

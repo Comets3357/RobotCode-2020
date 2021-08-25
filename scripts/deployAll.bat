@@ -1,8 +1,5 @@
 @echo off
-rem Execute gradle build
+rem Execute gradle deploy
 cd ..
 echo Building robot code
-call gradlew build
-rem Execute gradle dashboard
-echo Launching dashboard
-call gradlew dashboard
+call gradlew deploy

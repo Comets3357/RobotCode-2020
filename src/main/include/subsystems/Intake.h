@@ -1,6 +1,6 @@
 #pragma once
 
-#include "constants.h"
+#include "Constants.h"
 
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <rev/CANEncoder.h>
@@ -11,19 +11,16 @@ struct RobotData;
 
 struct IntakeData
 {
-    
 };
 
 class Intake
 {
 
 public:
-
     void RobotInit();
     void RobotPeriodic(const RobotData &robotData, IntakeData &intakeData);
 
 private:
-
     const double intakePivotSpeed = 0.3;
     const double intakeRollersSpeed = 0.3;
     const double intakeRollersEjectSpeed = 0.5;

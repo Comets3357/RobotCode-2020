@@ -10,6 +10,11 @@
  * button index starts at 1
  */
 
+void Controller::TeleopInit(ControllerData &controllerData)
+{
+    controllerData.driveMode = driveMode_teleop;
+}
+
 void Controller::TeleopPeriodic(const RobotData &robotData, ControllerData &controllerData)
 {
     updateBtnData(controllerData);
@@ -67,6 +72,8 @@ double Controller::getAxis(int js, int index)
 // for updating states of button variables
 void Controller::updateBtnData(ControllerData &controllerData)
 {
+    frc::SmartDashboard::PutBoolean("manual mode", controllerData.manualMode);
+
     // primary controls:
 
     if (frc::DriverStation::GetInstance().GetJoystickName(0) == "FrSky Taranis Joystick")
@@ -81,18 +88,18 @@ void Controller::updateBtnData(ControllerData &controllerData)
         controllerData.pRYStick = -getAxis(0, 5);
     }
 
-    // controllerData.pLShoulderSwitch = getBtn(0, 0);
-    // controllerData.pRShoulderSwitch = getBtn(0, 0);
+    controllerData.pLShoulderSwitch = getBtn(0, 2);
+    controllerData.pRShoulderSwitch = getBtn(0, 1);
 
     //secondary controls:
 
-    // controllerData.sLXStick = -getAxis(1, 1);
+    controllerData.sLXStick = -getAxis(1, 1);
     controllerData.sLYStick = -getAxis(1, 1);
-    // controllerData.sRXStick = -getAxis(1, 5);
+    controllerData.sRXStick = -getAxis(1, 5);
     controllerData.sRYStick = -getAxis(1, 5);
 
-    // controllerData.sLStickBtn = ;
-    // controllerData.sRStickBtn = ;
+    controllerData.sLStickBtn = getBtn(1, 9);
+    controllerData.sRStickBtn = getBtn(1, 10);
 
     controllerData.sLTrigger = getAxis(1, 2);
     controllerData.sRTrigger = getAxis(1, 3);
@@ -122,16 +129,95 @@ void Controller::updateBtnData(ControllerData &controllerData)
 void Controller::updateControlsData(ControllerData &controllerData)
 {
     // states:
+
+    frc::SmartDashboard::PutBoolean("climb mode", controllerData.climbMode);
     controllerData.shift = controllerData.sLBumper;
-    controllerData.manualMode = controllerData.sRCenterBtnToggled;
-    controllerData.climbMode = controllerData.sLCenterBtnToggled;
+    if (controllerData.sRCenterBtnToggled)
+    {
+        controllerData.manualMode = !controllerData.manualMode;
+    }
+    if (controllerData.sLCenterBtnToggled)
+    {
+        controllerData.climbMode = !controllerData.climbMode;
+    }
+    controllerData.shootingMode = controllerData.sYBtn;
+
+    // frc::SmartDashboard::PutBoolean("sRCenterBtnToggled", controllerData.sRCenterBtnToggled);
+    // frc::SmartDashboard::PutBoolean("shift", controllerData.shift);
 
     // controls:
 
     // drivebase:
-    controllerData.lDrive = controllerData.pLYStick;
-    controllerData.rDrive = controllerData.pRYStick;
-    controllerData.dbInverted = false;
+    // note: when pRShoulderSwitch is held, driving is sensitive to turning, while not held (default driving mode) driving is less sensitive to turning and good for quick staright movements and steady arcs (won't turn super easily)
 
-    
+    controllerData.turnResponsive = getAxis(0, 3);
+    if (controllerData.turnResponsive)
+    {
+        controllerData.maxStraight = 1;
+        controllerData.maxTurn = 0.75;
+    }
+    else
+    {
+        controllerData.maxStraight = 1;
+        controllerData.maxTurn = 0.25;
+    }
+
+    //frc::SmartDashboard::PutBoolean("turnResponsive", controllerData.turnResponsive);
+
+    controllerData.dbInverted = controllerData.pLShoulderSwitch;
+    // if you're inverted then you swtich sides for driving so it's intuitive
+    if (controllerData.dbInverted)
+    {
+        controllerData.lDrive = -controllerData.pRYStick;
+        controllerData.rDrive = -controllerData.pLYStick;
+    }
+    else
+    {
+        controllerData.lDrive = controllerData.pLYStick;
+        controllerData.rDrive = controllerData.pRYStick;
+    }
+
+    // intake:
+    controllerData.mIntakeDown = controllerData.sRBumper;
+    controllerData.mIntakeRollers = ((controllerData.sRTrigger > 0.5) && !controllerData.shift);
+    controllerData.mIntakeRollersBackward = ((controllerData.sRTrigger > 0.5) && controllerData.shift);
+    controllerData.saIntake = (controllerData.sRTrigger > 0.5);
+    controllerData.saIntakeBackward = ((controllerData.sLTrigger > 0.5) && !controllerData.shift);
+
+    //shooter:
+    controllerData.mShooterFlyWheel = controllerData.sBBtn;
+    controllerData.mSetHood = controllerData.sRYStick;
+    controllerData.mSetTurret = controllerData.sLYStick;
+
+    //limelight:
+    if (getPOV(1, 0) == 180)
+    {
+        controllerData.roughHood += 1;
+    }
+    else if (secondary.GetPOV(0) == 0)
+    {
+        controllerData.roughHood -= 1;
+    }
+
+    if (getPOV(1, 0) == 90)
+    {
+        controllerData.roughTurret = 1;
+    }
+    else if (secondary.GetPOV(0) == 270)
+    {
+        controllerData.roughTurret = -1;
+    }
+    else
+    {
+        controllerData.roughTurret = 0;
+    }
+
+    // indexer:
+    controllerData.mIndexer = ((controllerData.sLTrigger > 0.5) && !controllerData.shift);
+    controllerData.mIndexerBackwards = ((controllerData.sLTrigger > 0.5) && controllerData.shift);
+    controllerData.saEjectBallsBackwards = controllerData.sABtn;
+
+    // climb:
+    controllerData.lift = controllerData.sXBtn;
+    //controllerData.climb = controllerData.sYBtn;
 }

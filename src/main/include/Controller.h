@@ -6,6 +6,13 @@
 
 struct RobotData;
 
+enum DriveMode
+{
+    driveMode_teleop,
+    driveMode_potato,
+    driveMode_driveStraight
+};
+
 struct ControllerData
 {
     // controls data:
@@ -14,12 +21,41 @@ struct ControllerData
     bool manualMode = false;
     bool climbMode = false;
     bool shift = false;
+    bool shootingMode = false;
 
     // drivebase:
-    double lDrive;
-    double rDrive;
+    double lDrive = 0;
+    double rDrive = 0;
+    bool turnResponsive = false;
+    bool dbInverted = false;
+    double maxStraight = 1;
+    double maxTurn = 0.4;
+    DriveMode driveMode = driveMode_potato;
 
-    bool dbInverted;
+    // indexer:
+    bool mIndexer;
+    bool mIndexerBackwards;
+    bool saEjectBallsBackwards;
+
+    // intake:
+    bool mIntakeDown;
+    bool mIntakeRollers;
+    bool mIntakeRollersBackward;
+    bool saIntake;
+    bool saIntakeBackward;
+
+    //shooter:
+    bool mShooterFlyWheel;
+    double mSetTurret;
+    double mSetHood;
+
+    //limelight
+    int roughHood = 0;
+    int roughTurret = 0;
+
+    // climb:
+    bool lift;
+    bool climb;
 
     // btn data:
     // L = left, R = right, p = primary, s = secondary, Btn = button
@@ -73,6 +109,7 @@ class Controller
 
 public:
     void TeleopPeriodic(const RobotData &robotData, ControllerData &controllerData);
+    void TeleopInit(ControllerData &controllerData);
 
 private:
     void updateBtnData(ControllerData &controllerData);
@@ -87,4 +124,3 @@ private:
     frc::Joystick primary{0};
     frc::Joystick secondary{1};
 };
-

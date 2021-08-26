@@ -131,11 +131,11 @@ void Shooter::semiAutoMode(const RobotData &robotData, ShooterData &shooterData)
             //shooterTurret_pidController.SetReference(robotData.limelightData.calcTurretPos + getTurretPos(), rev::ControlType::kPosition);
             if (robotData.limelightData.xOffset > 3)
             {
-                setTurret(-0.1);
+                setTurret(-0.07);
             }
             else if (robotData.limelightData.xOffset < 1)
             {
-                setTurret(0.1);
+                setTurret(0.07);
             }
             else
             {

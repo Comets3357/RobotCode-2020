@@ -89,30 +89,30 @@ int Limelight::getPipeline(double verticalOffset)
     if (verticalOffset > 14)
     {
         // pipeline = 1;
-        pipeline = 1;
+        pipeline = 5;
     }
     else if (verticalOffset > 9)
     {
         // pipeline = 2;
-        pipeline = 2;
+        pipeline = 6;
     }
     else if (verticalOffset > 6)
     {
         // pipeline = 3;
-        pipeline = 3;
+        pipeline = 7;
     }
     else if (verticalOffset > 1)
     {
         // pipeline = 4;
-        pipeline = 3;
+        pipeline = 7;
     }
     else if (verticalOffset > -2)
     {
-        pipeline = 4;
+        pipeline = 8;
     }
     else
     {
-        pipeline = 1;
+        pipeline = 5;
     }
 
     //basically if you can see the target turn on the limelight otherwise don't
